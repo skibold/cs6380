@@ -33,6 +33,9 @@ public class Message {
 	public static Message lead(int o, int r) {
 		return new Message(LEAD, o, r);
 	}
+	public static Message copy(Message m) {
+		return new Message(m.type(), m.originator(), m.recipient());
+	}
 
 	// public getters
 	public boolean isExplore() {
@@ -58,11 +61,12 @@ public class Message {
 	}
 
 	// other utils
-	public boolean compare(Message m) {
-		// if originators and recipients match then this.isExplore and (m.isAck || m.isNack) to this
-		return m.originator() == this.originator && m.recipient() == this.recipient;
+	public boolean isResponseTo(Message m) {
+		// if originators and recipients match then m.isExplore and (this.isAck || this.isNack) to m
+		return m.isExplore() && (this.isAck() || this.isNack()) && 
+			m.originator() == this.originator && m.recipient() == this.recipient;
 	}
-	public Message cloneForNewRecipient(Message m, int r) {
+	public static Message cloneForNewRecipient(Message m, int r) {
 		return new Message(m.type(), m.originator(), r);
 	}
 }
