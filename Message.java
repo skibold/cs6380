@@ -12,12 +12,14 @@ public class Message {
 	private String type; // must be one of EXP, ACK, NACK, LEAD
 	private int originator; // the process id which sent this message, set this for explore messages only
 	private int recipient; // the process this message is sent to
+	private String tostr;
 
 	// private constructor, clients should use public static "factory" methods
 	private Message(String t, int o, int r) {
 		this.type = t;
 		this.originator = o;
 		this.recipient = r;
+		this.tostr = "{type: " + type + ", originator: " + originator + ", recipient: " + recipient + "}";
 	}
 	
 	// factory methods to make construction easy
@@ -32,9 +34,6 @@ public class Message {
 	}
 	public static Message lead(int o, int r) {
 		return new Message(LEAD, o, r);
-	}
-	public static Message copy(Message m) {
-		return new Message(m.type(), m.originator(), m.recipient());
 	}
 
 	// public getters
@@ -51,7 +50,7 @@ public class Message {
 		return LEAD.equals(type);
 	}
 	public int originator() {
-		return originator();
+		return originator;
 	}
 	public int recipient() {
 		return recipient;
@@ -68,5 +67,8 @@ public class Message {
 	}
 	public static Message cloneForNewRecipient(Message m, int r) {
 		return new Message(m.type(), m.originator(), r);
+	}
+	public String toString() {
+		return tostr;
 	}
 }

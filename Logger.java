@@ -81,6 +81,7 @@ public class Logger {
 	}
 
 	public static void debug(String classname, String methodname, String msg) {
+		if(instance == null || !instance.debug()) return;
 		if(instance != null && instance.debug())
 			instance.write(format(DEBUG, classname, methodname, msg));
 		else
