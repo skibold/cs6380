@@ -91,15 +91,13 @@ public class Logger {
 	public static void error(String classname, String methodname, String msg) {
 		if(instance != null)
 			instance.write(format(ERROR, classname, methodname, msg));
-		else
-			System.out.print(format(ERROR, classname, methodname, msg));
+		System.err.print(format(ERROR, classname, methodname, msg));
 	}
 
 	public static void error(String classname, String methodname, Exception e) {
 		if(instance != null)
 			instance.write(format(ERROR, classname, methodname, e.getLocalizedMessage()));
-		else
-			System.out.print(format(ERROR, classname, methodname, e.getLocalizedMessage()));
+		System.err.print(format(ERROR, classname, methodname, e.getLocalizedMessage()));
 	}
 
 	public static void warning(String classname, String methodname, String msg) {
