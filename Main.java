@@ -18,14 +18,20 @@ public class Main{
 		Logger.init(logfile, true);
 
     while(sc.hasNextInt()){
+
+      for (int m=0;m<n;m++)
+      {
+      	ids[m]=sc.nextInt();
+      }
       for(int i=0;i<n;i++)
+      
       {
         ids[i]=i+1;
         adjacencyList.clear();
         for(int j=0;j<n;j++)
         {
           int num = sc.nextInt();
-          System.out.println(num);
+          //System.out.println(num);
           if(num==1){
               edgeList.add(new Edge(i+1,j+1));
           }
@@ -35,10 +41,10 @@ public class Main{
       }
     }
 
-    for(int k=0;k<n;k++)
+    /*for(int k=0;k<n;k++)
     {
       System.out.println(Arrays.toString(adjacencyMatrix.get(k).toArray()));
-    }
+    }*/
 
     ArrayList<Process> procs = new ArrayList<Process>();
 		for(int i=0; i<ids.length; i++) {
