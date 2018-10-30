@@ -1,0 +1,10 @@
+# cs6380
+distributed computing projects
+John Scebold
+Vijay Venugopal
+
+Instructions to compile and run:
+Compilation- javac *.java
+run- java Main logfile.txt < testinput.txt
+
+We ran the above command and you can see the output in logfile.txt

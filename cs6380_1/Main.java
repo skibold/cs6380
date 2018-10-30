@@ -3,7 +3,7 @@ import java.util.*;
 public class Main{
   private static int n;
   private static String classname = Main.class.getName();
-  // private static ArrayList<Integer> adjacencyList;
+
   public static void main(String[] args){
     ArrayList<Integer> adjacencyList=new ArrayList<Integer>();
     ArrayList<Edge> edgeList=new ArrayList<Edge>();
@@ -26,14 +26,13 @@ public class Main{
       for(int i=0;i<n;i++)
       
       {
-        ids[i]=i+1;
         adjacencyList.clear();
         for(int j=0;j<n;j++)
         {
           int num = sc.nextInt();
           //System.out.println(num);
-          if(num==1){
-              edgeList.add(new Edge(i+1,j+1));
+          if(num==1 && j > i){
+              edgeList.add(new Edge(ids[i],ids[j]));
           }
           adjacencyList.add(num);
         }
@@ -79,7 +78,7 @@ public class Main{
 
 		for(Process p : procs)
 			Logger.toScreen(classname, method, p.getId() + " parent: " + p.parent() +
-					", children: " + p.children() + ", is leader? " + p.isLeader());
+					", children: {" + p.children() + "}, leader: " + p.isLeader());
 
   }
 }

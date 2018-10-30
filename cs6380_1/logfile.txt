@@ -1,0 +1,594 @@
+2018-10-13_22:32:19.597 NORMAL Edge.Edge: Creating an edge from 1 to 2
+2018-10-13_22:32:19.614 NORMAL Edge.Edge: Creating an edge from 1 to 3
+2018-10-13_22:32:19.614 NORMAL Edge.Edge: Creating an edge from 1 to 6
+2018-10-13_22:32:19.615 NORMAL Edge.Edge: Creating an edge from 2 to 3
+2018-10-13_22:32:19.615 NORMAL Edge.Edge: Creating an edge from 2 to 4
+2018-10-13_22:32:19.615 NORMAL Edge.Edge: Creating an edge from 3 to 4
+2018-10-13_22:32:19.616 NORMAL Edge.Edge: Creating an edge from 4 to 5
+2018-10-13_22:32:19.616 NORMAL Edge.Edge: Creating an edge from 5 to 6
+2018-10-13_22:32:19.640 NORMAL Process.Process: created process 1 with edges {Edge(1<-->2), Edge(1<-->3), Edge(1<-->6), }
+2018-10-13_22:32:19.640 NORMAL Process.Process: created process 2 with edges {Edge(1<-->2), Edge(2<-->3), Edge(2<-->4), }
+2018-10-13_22:32:19.640 NORMAL Process.Process: created process 3 with edges {Edge(1<-->3), Edge(2<-->3), Edge(3<-->4), }
+2018-10-13_22:32:19.640 NORMAL Process.Process: created process 4 with edges {Edge(2<-->4), Edge(3<-->4), Edge(4<-->5), }
+2018-10-13_22:32:19.640 NORMAL Process.Process: created process 5 with edges {Edge(4<-->5), Edge(5<-->6), }
+2018-10-13_22:32:19.641 NORMAL Process.Process: created process 6 with edges {Edge(1<-->6), Edge(5<-->6), }
+2018-10-13_22:32:19.643 STDOUT Main.main: round 0
+2018-10-13_22:32:19.644 NORMAL Process(1).start: round 0
+2018-10-13_22:32:19.645 NORMAL Process(2).start: round 0
+2018-10-13_22:32:19.645 NORMAL Process(3).start: round 0
+2018-10-13_22:32:19.645 NORMAL Process(1).run: First round, send explore on all edges: {Edge(1<-->2), Edge(1<-->3), Edge(1<-->6), }
+2018-10-13_22:32:19.648 NORMAL Process(4).start: round 0
+2018-10-13_22:32:19.650 NORMAL Process(3).run: First round, send explore on all edges: {Edge(1<-->3), Edge(2<-->3), Edge(3<-->4), }
+2018-10-13_22:32:19.650 NORMAL Process(2).run: First round, send explore on all edges: {Edge(1<-->2), Edge(2<-->3), Edge(2<-->4), }
+2018-10-13_22:32:19.651 NORMAL Process(5).start: round 0
+2018-10-13_22:32:19.651 NORMAL Process(4).run: First round, send explore on all edges: {Edge(2<-->4), Edge(3<-->4), Edge(4<-->5), }
+2018-10-13_22:32:19.651 NORMAL Process(6).start: round 0
+2018-10-13_22:32:19.651 NORMAL Process(5).run: First round, send explore on all edges: {Edge(4<-->5), Edge(5<-->6), }
+2018-10-13_22:32:19.653 NORMAL Process(6).run: First round, send explore on all edges: {Edge(1<-->6), Edge(5<-->6), }
+2018-10-13_22:32:19.658 DEBUG Main.main: try to join 1
+2018-10-13_22:32:19.670 DEBUG Edge(1<-->2).send: Message on queue from 1 to 2
+2018-10-13_22:32:19.670 DEBUG Edge(1<-->2).send: Message on queue from 2 to 1
+2018-10-13_22:32:19.670 DEBUG Edge(2<-->4).send: Message on queue from 4 to 2
+2018-10-13_22:32:19.670 DEBUG Edge(1<-->6).send: Message on queue from 6 to 1
+2018-10-13_22:32:19.670 DEBUG Edge(1<-->3).send: Message on queue from 3 to 1
+2018-10-13_22:32:19.670 DEBUG Edge(1<-->3).send: Message on queue from 1 to 3
+2018-10-13_22:32:19.670 DEBUG Edge(2<-->3).send: Message on queue from 2 to 3
+2018-10-13_22:32:19.671 DEBUG Edge(5<-->6).send: Message on queue from 6 to 5
+2018-10-13_22:32:19.671 DEBUG Edge(3<-->4).send: Message on queue from 4 to 3
+2018-10-13_22:32:19.670 DEBUG Edge(4<-->5).send: Message on queue from 5 to 4
+2018-10-13_22:32:19.671 DEBUG Edge(2<-->4).send: Message on queue from 2 to 4
+2018-10-13_22:32:19.671 DEBUG Edge(1<-->6).send: Message on queue from 1 to 6
+2018-10-13_22:32:19.671 DEBUG Edge(2<-->3).send: Message on queue from 3 to 2
+2018-10-13_22:32:19.671 DEBUG Edge(5<-->6).send: Message on queue from 5 to 6
+2018-10-13_22:32:19.671 DEBUG Edge(3<-->4).send: Message on queue from 3 to 4
+2018-10-13_22:32:19.671 DEBUG Edge(4<-->5).send: Message on queue from 4 to 5
+2018-10-13_22:32:19.671 NORMAL Process(1).finish: round 0
+2018-10-13_22:32:19.671 DEBUG Main.main: try to join 2
+2018-10-13_22:32:19.671 NORMAL Process(2).finish: round 0
+2018-10-13_22:32:19.671 DEBUG Main.main: try to join 3
+2018-10-13_22:32:19.672 NORMAL Process(3).finish: round 0
+2018-10-13_22:32:19.672 DEBUG Main.main: try to join 4
+2018-10-13_22:32:19.672 NORMAL Process(4).finish: round 0
+2018-10-13_22:32:19.672 DEBUG Main.main: try to join 5
+2018-10-13_22:32:19.672 NORMAL Process(5).finish: round 0
+2018-10-13_22:32:19.672 DEBUG Main.main: try to join 6
+2018-10-13_22:32:19.672 NORMAL Process(6).finish: round 0
+2018-10-13_22:32:19.672 STDOUT Main.main: round 1
+2018-10-13_22:32:19.672 NORMAL Process(1).start: round 1
+2018-10-13_22:32:19.673 NORMAL Process(2).start: round 1
+2018-10-13_22:32:19.673 NORMAL Process(3).start: round 1
+2018-10-13_22:32:19.674 NORMAL Process(4).start: round 1
+2018-10-13_22:32:19.677 NORMAL Process(5).start: round 1
+2018-10-13_22:32:19.678 NORMAL Process(6).start: round 1
+2018-10-13_22:32:19.679 DEBUG Main.main: try to join 1
+2018-10-13_22:32:19.700 DEBUG Edge(1<-->6).poll: 6 polling 1 ... received {type: explore, originator: 1, recipient: 6}
+2018-10-13_22:32:19.700 DEBUG Edge(1<-->2).poll: 1 polling 2 ... received {type: explore, originator: 2, recipient: 1}
+2018-10-13_22:32:19.700 DEBUG Edge(4<-->5).poll: 5 polling 4 ... received {type: explore, originator: 4, recipient: 5}
+2018-10-13_22:32:19.701 DEBUG Edge(1<-->3).poll: 3 polling 1 ... received {type: explore, originator: 1, recipient: 3}
+2018-10-13_22:32:19.701 DEBUG Edge(2<-->4).poll: 4 polling 2 ... received {type: explore, originator: 2, recipient: 4}
+2018-10-13_22:32:19.704 DEBUG Edge(1<-->2).poll: 2 polling 1 ... received {type: explore, originator: 1, recipient: 2}
+2018-10-13_22:32:19.705 NORMAL Process(3).run: Received {type: explore, originator: 1, recipient: 3} from 1
+2018-10-13_22:32:19.705 NORMAL Process(2).run: Received {type: explore, originator: 1, recipient: 2} from 1
+2018-10-13_22:32:19.705 NORMAL Process(6).run: Received {type: explore, originator: 1, recipient: 6} from 1
+2018-10-13_22:32:19.705 NORMAL Process(1).run: Received {type: explore, originator: 2, recipient: 1} from 2
+2018-10-13_22:32:19.705 NORMAL Process(4).run: Received {type: explore, originator: 2, recipient: 4} from 2
+2018-10-13_22:32:19.705 DEBUG Process(3).run: I must respond to 1
+2018-10-13_22:32:19.705 DEBUG Process(4).run: I must respond to 2
+2018-10-13_22:32:19.705 DEBUG Edge(2<-->3).poll: 3 polling 2 ... received {type: explore, originator: 2, recipient: 3}
+2018-10-13_22:32:19.705 DEBUG Process(1).run: I must respond to 2
+2018-10-13_22:32:19.706 NORMAL Process(3).run: Received {type: explore, originator: 2, recipient: 3} from 2
+2018-10-13_22:32:19.706 DEBUG Edge(3<-->4).poll: 4 polling 3 ... received {type: explore, originator: 3, recipient: 4}
+2018-10-13_22:32:19.706 DEBUG Process(3).run: I must respond to 2
+2018-10-13_22:32:19.706 NORMAL Process(4).run: Received {type: explore, originator: 3, recipient: 4} from 3
+2018-10-13_22:32:19.706 DEBUG Process(2).run: I must respond to 1
+2018-10-13_22:32:19.706 DEBUG Edge(3<-->4).poll: 3 polling 4 ... received {type: explore, originator: 4, recipient: 3}
+2018-10-13_22:32:19.706 DEBUG Process(4).run: I must respond to 3
+2018-10-13_22:32:19.706 DEBUG Edge(2<-->3).poll: 2 polling 3 ... received {type: explore, originator: 3, recipient: 2}
+2018-10-13_22:32:19.706 NORMAL Process(3).run: Received {type: explore, originator: 4, recipient: 3} from 4
+2018-10-13_22:32:19.706 DEBUG Edge(4<-->5).poll: 4 polling 5 ... received {type: explore, originator: 5, recipient: 4}
+2018-10-13_22:32:19.706 NORMAL Process(2).run: Received {type: explore, originator: 3, recipient: 2} from 3
+2018-10-13_22:32:19.706 DEBUG Process(3).run: I must respond to 4
+2018-10-13_22:32:19.706 NORMAL Process(4).run: Received {type: explore, originator: 5, recipient: 4} from 5
+2018-10-13_22:32:19.706 DEBUG Process(4).run: I must respond to 5
+2018-10-13_22:32:19.707 DEBUG Process(6).run: I must respond to 1
+2018-10-13_22:32:19.707 DEBUG Edge(5<-->6).poll: 6 polling 5 ... received {type: explore, originator: 5, recipient: 6}
+2018-10-13_22:32:19.707 NORMAL Process(6).run: Received {type: explore, originator: 5, recipient: 6} from 5
+2018-10-13_22:32:19.707 DEBUG Process(6).run: I must respond to 5
+2018-10-13_22:32:19.709 DEBUG Process(2).run: I must respond to 3
+2018-10-13_22:32:19.710 NORMAL Process(5).run: Received {type: explore, originator: 4, recipient: 5} from 4
+2018-10-13_22:32:19.710 DEBUG Process(5).run: I must respond to 4
+2018-10-13_22:32:19.710 DEBUG Edge(5<-->6).poll: 5 polling 6 ... received {type: explore, originator: 6, recipient: 5}
+2018-10-13_22:32:19.710 NORMAL Process(5).run: Received {type: explore, originator: 6, recipient: 5} from 6
+2018-10-13_22:32:19.710 DEBUG Process(5).run: I must respond to 6
+2018-10-13_22:32:19.712 NORMAL Process(6).run: Send {type: nack, originator: 1, recipient: 6} to 1
+2018-10-13_22:32:19.720 DEBUG Process(3).responseFrom: Delete awaitingResponse(4, {type: explore, originator: 3, recipient: 4})
+2018-10-13_22:32:19.720 DEBUG Process(2).responseFrom: Delete awaitingResponse(3, {type: explore, originator: 2, recipient: 3})
+2018-10-13_22:32:19.720 DEBUG Process(4).responseFrom: Delete awaitingResponse(5, {type: explore, originator: 4, recipient: 5})
+2018-10-13_22:32:19.720 DEBUG Edge(2<-->4).poll: 2 polling 4 ... received {type: explore, originator: 4, recipient: 2}
+2018-10-13_22:32:19.720 NORMAL Process(2).run: Received {type: explore, originator: 4, recipient: 2} from 4
+2018-10-13_22:32:19.720 DEBUG Process(2).run: I must respond to 4
+2018-10-13_22:32:19.720 DEBUG Process(2).responseFrom: Delete awaitingResponse(4, {type: explore, originator: 2, recipient: 4})
+2018-10-13_22:32:19.724 NORMAL Process(4).run: 5 is the largest I've seen. Forward to everyone. Set new parent = 5
+2018-10-13_22:32:19.724 NORMAL Process(3).run: 4 is the largest I've seen. Forward to everyone. Set new parent = 4
+2018-10-13_22:32:19.724 NORMAL Process(2).run: 4 is the largest I've seen. Forward to everyone. Set new parent = 4
+2018-10-13_22:32:19.724 NORMAL Process(4).run: Forward {type: explore, originator: 5, recipient: 2}
+2018-10-13_22:32:19.724 NORMAL Process(3).run: Forward {type: explore, originator: 4, recipient: 1}
+2018-10-13_22:32:19.724 NORMAL Process(2).run: Forward {type: explore, originator: 4, recipient: 1}
+2018-10-13_22:32:19.726 DEBUG Process(1).responseFrom: Delete awaitingResponse(2, {type: explore, originator: 1, recipient: 2})
+2018-10-13_22:32:19.726 DEBUG Process(5).responseFrom: Delete awaitingResponse(6, {type: explore, originator: 5, recipient: 6})
+2018-10-13_22:32:19.726 DEBUG Edge(1<-->3).poll: 1 polling 3 ... received {type: explore, originator: 3, recipient: 1}
+2018-10-13_22:32:19.726 NORMAL Process(5).run: 6 is the largest I've seen. Forward to everyone. Set new parent = 6
+2018-10-13_22:32:19.726 NORMAL Process(1).run: Received {type: explore, originator: 3, recipient: 1} from 3
+2018-10-13_22:32:19.726 NORMAL Process(5).run: Forward {type: explore, originator: 6, recipient: 4}
+2018-10-13_22:32:19.726 DEBUG Process(1).run: I must respond to 3
+2018-10-13_22:32:19.726 DEBUG Process(1).responseFrom: Delete awaitingResponse(3, {type: explore, originator: 1, recipient: 3})
+2018-10-13_22:32:19.727 DEBUG Edge(1<-->6).poll: 1 polling 6 ... received {type: explore, originator: 6, recipient: 1}
+2018-10-13_22:32:19.727 DEBUG Edge(1<-->6).send: Message on queue from 6 to 1
+2018-10-13_22:32:19.727 NORMAL Process(1).run: Received {type: explore, originator: 6, recipient: 1} from 6
+2018-10-13_22:32:19.727 DEBUG Process(1).run: I must respond to 6
+2018-10-13_22:32:19.727 DEBUG Process(1).responseFrom: Delete awaitingResponse(6, {type: explore, originator: 1, recipient: 6})
+2018-10-13_22:32:19.727 NORMAL Process(6).run: Send {type: nack, originator: 5, recipient: 6} to 5
+2018-10-13_22:32:19.727 NORMAL Process(1).run: 6 is the largest I've seen. Forward to everyone. Set new parent = 6
+2018-10-13_22:32:19.727 DEBUG Edge(5<-->6).send: Message on queue from 6 to 5
+2018-10-13_22:32:19.727 NORMAL Process(1).run: Forward {type: explore, originator: 6, recipient: 2}
+2018-10-13_22:32:19.739 DEBUG Process(5).run: This counts as a response TO (4,{type: explore, originator: 4, recipient: 5}). Now I need a response FROM 4
+2018-10-13_22:32:19.739 DEBUG Process(1).run: This counts as a response TO (2,{type: explore, originator: 2, recipient: 1}). Now I need a response FROM 2
+2018-10-13_22:32:19.739 DEBUG Process(4).run: This counts as a response TO (2,{type: explore, originator: 2, recipient: 4}). Now I need a response FROM 2
+2018-10-13_22:32:19.739 DEBUG Edge(4<-->5).send: Message on queue from 5 to 4
+2018-10-13_22:32:19.739 DEBUG Edge(1<-->2).send: Message on queue from 1 to 2
+2018-10-13_22:32:19.739 DEBUG Edge(2<-->4).send: Message on queue from 4 to 2
+2018-10-13_22:32:19.739 NORMAL Process(1).run: Forward {type: explore, originator: 6, recipient: 3}
+2018-10-13_22:32:19.739 NORMAL Process(4).run: Forward {type: explore, originator: 5, recipient: 3}
+2018-10-13_22:32:19.739 DEBUG Process(1).run: This counts as a response TO (3,{type: explore, originator: 3, recipient: 1}). Now I need a response FROM 3
+2018-10-13_22:32:19.739 DEBUG Process(4).run: This counts as a response TO (3,{type: explore, originator: 3, recipient: 4}). Now I need a response FROM 3
+2018-10-13_22:32:19.739 DEBUG Edge(1<-->3).send: Message on queue from 1 to 3
+2018-10-13_22:32:19.739 DEBUG Edge(3<-->4).send: Message on queue from 4 to 3
+2018-10-13_22:32:19.739 NORMAL Process(1).finish: round 1
+2018-10-13_22:32:19.740 DEBUG Main.main: try to join 2
+2018-10-13_22:32:19.740 DEBUG Process(2).run: This counts as a response TO (1,{type: explore, originator: 1, recipient: 2}). Now I need a response FROM 1
+2018-10-13_22:32:19.740 DEBUG Process(3).run: This counts as a response TO (1,{type: explore, originator: 1, recipient: 3}). Now I need a response FROM 1
+2018-10-13_22:32:19.740 DEBUG Edge(1<-->3).send: Message on queue from 3 to 1
+2018-10-13_22:32:19.740 DEBUG Edge(1<-->2).send: Message on queue from 2 to 1
+2018-10-13_22:32:19.740 NORMAL Process(3).run: Forward {type: explore, originator: 4, recipient: 2}
+2018-10-13_22:32:19.740 NORMAL Process(2).run: Forward {type: explore, originator: 4, recipient: 3}
+2018-10-13_22:32:19.740 DEBUG Process(2).run: This counts as a response TO (3,{type: explore, originator: 3, recipient: 2}). Now I need a response FROM 3
+2018-10-13_22:32:19.740 DEBUG Process(3).run: This counts as a response TO (2,{type: explore, originator: 2, recipient: 3}). Now I need a response FROM 2
+2018-10-13_22:32:19.740 DEBUG Edge(2<-->3).send: Message on queue from 2 to 3
+2018-10-13_22:32:19.740 DEBUG Edge(2<-->3).send: Message on queue from 3 to 2
+2018-10-13_22:32:19.740 NORMAL Process(2).finish: round 1
+2018-10-13_22:32:19.740 DEBUG Main.main: try to join 3
+2018-10-13_22:32:19.740 NORMAL Process(3).finish: round 1
+2018-10-13_22:32:19.741 DEBUG Main.main: try to join 4
+2018-10-13_22:32:19.741 NORMAL Process(4).finish: round 1
+2018-10-13_22:32:19.741 DEBUG Main.main: try to join 5
+2018-10-13_22:32:19.741 NORMAL Process(5).finish: round 1
+2018-10-13_22:32:19.741 DEBUG Main.main: try to join 6
+2018-10-13_22:32:19.741 NORMAL Process(6).finish: round 1
+2018-10-13_22:32:19.741 STDOUT Main.main: round 2
+2018-10-13_22:32:19.741 NORMAL Process(1).start: round 2
+2018-10-13_22:32:19.741 NORMAL Process(2).start: round 2
+2018-10-13_22:32:19.741 DEBUG Edge(1<-->2).poll: 1 polling 2 ... received {type: explore, originator: 4, recipient: 1}
+2018-10-13_22:32:19.741 NORMAL Process(1).run: Received {type: explore, originator: 4, recipient: 1} from 2
+2018-10-13_22:32:19.741 NORMAL Process(3).start: round 2
+2018-10-13_22:32:19.741 DEBUG Process(1).run: I must respond to 2
+2018-10-13_22:32:19.741 DEBUG Edge(1<-->2).poll: 2 polling 1 ... received {type: explore, originator: 6, recipient: 2}
+2018-10-13_22:32:19.741 DEBUG Edge(1<-->3).poll: 1 polling 3 ... received {type: explore, originator: 4, recipient: 1}
+2018-10-13_22:32:19.741 NORMAL Process(4).start: round 2
+2018-10-13_22:32:19.741 NORMAL Process(2).run: Received {type: explore, originator: 6, recipient: 2} from 1
+2018-10-13_22:32:19.741 NORMAL Process(1).run: Received {type: explore, originator: 4, recipient: 1} from 3
+2018-10-13_22:32:19.742 DEBUG Edge(1<-->3).poll: 3 polling 1 ... received {type: explore, originator: 6, recipient: 3}
+2018-10-13_22:32:19.742 DEBUG Process(2).run: I must respond to 1
+2018-10-13_22:32:19.742 NORMAL Process(5).start: round 2
+2018-10-13_22:32:19.742 NORMAL Process(3).run: Received {type: explore, originator: 6, recipient: 3} from 1
+2018-10-13_22:32:19.742 DEBUG Process(2).responseFrom: Delete awaitingResponse(1, {type: explore, originator: 4, recipient: 1})
+2018-10-13_22:32:19.742 DEBUG Process(3).run: I must respond to 1
+2018-10-13_22:32:19.742 DEBUG Edge(2<-->4).poll: 4 polling 2 ... received null
+2018-10-13_22:32:19.742 DEBUG Process(3).responseFrom: Delete awaitingResponse(1, {type: explore, originator: 4, recipient: 1})
+2018-10-13_22:32:19.742 DEBUG Edge(2<-->3).poll: 2 polling 3 ... received {type: explore, originator: 4, recipient: 2}
+2018-10-13_22:32:19.742 DEBUG Edge(2<-->3).poll: 3 polling 2 ... received {type: explore, originator: 4, recipient: 3}
+2018-10-13_22:32:19.742 NORMAL Process(2).run: Received {type: explore, originator: 4, recipient: 2} from 3
+2018-10-13_22:32:19.742 NORMAL Process(3).run: Received {type: explore, originator: 4, recipient: 3} from 2
+2018-10-13_22:32:19.742 DEBUG Process(3).run: I must respond to 2
+2018-10-13_22:32:19.742 DEBUG Edge(3<-->4).poll: 3 polling 4 ... received {type: explore, originator: 5, recipient: 3}
+2018-10-13_22:32:19.742 NORMAL Process(3).run: Received {type: explore, originator: 5, recipient: 3} from 4
+2018-10-13_22:32:19.742 NORMAL Process(4).run: No message from 2
+2018-10-13_22:32:19.742 DEBUG Process(1).run: I must respond to 3
+2018-10-13_22:32:19.742 DEBUG Process(3).run: I must respond to 4
+2018-10-13_22:32:19.742 DEBUG Edge(3<-->4).poll: 4 polling 3 ... received null
+2018-10-13_22:32:19.742 DEBUG Edge(1<-->6).poll: 1 polling 6 ... received {type: nack, originator: 1, recipient: 6}
+2018-10-13_22:32:19.742 NORMAL Process(3).run: 6 is the largest I've seen. Forward to everyone. Set new parent = 1
+2018-10-13_22:32:19.742 DEBUG Process(2).run: I must respond to 3
+2018-10-13_22:32:19.742 NORMAL Process(4).run: No message from 3
+2018-10-13_22:32:19.742 NORMAL Process(1).run: Received {type: nack, originator: 1, recipient: 6} from 6
+2018-10-13_22:32:19.742 DEBUG Edge(2<-->4).poll: 2 polling 4 ... received {type: explore, originator: 5, recipient: 2}
+2018-10-13_22:32:19.742 NORMAL Process(3).run: Forward {type: explore, originator: 6, recipient: 2}
+2018-10-13_22:32:19.742 DEBUG Edge(4<-->5).poll: 4 polling 5 ... received {type: explore, originator: 6, recipient: 4}
+2018-10-13_22:32:19.742 NORMAL Process(1).run: Send {type: nack, originator: 4, recipient: 1} to 2
+2018-10-13_22:32:19.742 NORMAL Process(2).run: Received {type: explore, originator: 5, recipient: 2} from 4
+2018-10-13_22:32:19.742 NORMAL Process(4).run: Received {type: explore, originator: 6, recipient: 4} from 5
+2018-10-13_22:32:19.742 DEBUG Process(2).run: I must respond to 4
+2018-10-13_22:32:19.742 DEBUG Edge(1<-->2).send: Message on queue from 1 to 2
+2018-10-13_22:32:19.742 DEBUG Process(3).run: This counts as a response TO (2,{type: explore, originator: 4, recipient: 3}). Now I need a response FROM 2
+2018-10-13_22:32:19.742 NORMAL Process(2).run: 6 is the largest I've seen. Forward to everyone. Set new parent = 1
+2018-10-13_22:32:19.742 DEBUG Process(4).run: I must respond to 5
+2018-10-13_22:32:19.743 NORMAL Process(1).run: Send {type: nack, originator: 4, recipient: 1} to 3
+2018-10-13_22:32:19.743 DEBUG Edge(2<-->3).send: Message on queue from 3 to 2
+2018-10-13_22:32:19.743 NORMAL Process(2).run: Forward {type: explore, originator: 6, recipient: 3}
+2018-10-13_22:32:19.743 NORMAL Process(4).run: 6 is the largest I've seen. Forward to everyone. Set new parent = 5
+2018-10-13_22:32:19.743 DEBUG Edge(1<-->3).send: Message on queue from 1 to 3
+2018-10-13_22:32:19.743 NORMAL Process(3).run: Forward {type: explore, originator: 6, recipient: 4}
+2018-10-13_22:32:19.743 DEBUG Process(2).run: This counts as a response TO (3,{type: explore, originator: 4, recipient: 2}). Now I need a response FROM 3
+2018-10-13_22:32:19.743 NORMAL Process(4).run: Forward {type: explore, originator: 6, recipient: 2}
+2018-10-13_22:32:19.743 DEBUG Edge(2<-->3).send: Message on queue from 2 to 3
+2018-10-13_22:32:19.743 DEBUG Process(4).run: This counts as a response TO (2,null). Now I need a response FROM 2
+2018-10-13_22:32:19.743 DEBUG Process(3).run: This counts as a response TO (4,{type: explore, originator: 5, recipient: 3}). Now I need a response FROM 4
+2018-10-13_22:32:19.743 NORMAL Process(2).run: Forward {type: explore, originator: 6, recipient: 4}
+2018-10-13_22:32:19.743 DEBUG Edge(2<-->4).send: Message on queue from 4 to 2
+2018-10-13_22:32:19.743 DEBUG Process(2).run: This counts as a response TO (4,{type: explore, originator: 5, recipient: 2}). Now I need a response FROM 4
+2018-10-13_22:32:19.743 DEBUG Edge(3<-->4).send: Message on queue from 3 to 4
+2018-10-13_22:32:19.743 NORMAL Process(4).run: Forward {type: explore, originator: 6, recipient: 3}
+2018-10-13_22:32:19.743 DEBUG Edge(2<-->4).send: Message on queue from 2 to 4
+2018-10-13_22:32:19.743 DEBUG Process(4).run: This counts as a response TO (3,null). Now I need a response FROM 3
+2018-10-13_22:32:19.743 DEBUG Edge(3<-->4).send: Message on queue from 4 to 3
+2018-10-13_22:32:19.744 NORMAL Process(6).start: round 2
+2018-10-13_22:32:19.744 DEBUG Edge(4<-->5).poll: 5 polling 4 ... received null
+2018-10-13_22:32:19.744 NORMAL Process(5).run: No message from 4
+2018-10-13_22:32:19.744 DEBUG Main.main: try to join 1
+2018-10-13_22:32:19.744 DEBUG Edge(5<-->6).poll: 5 polling 6 ... received {type: nack, originator: 5, recipient: 6}
+2018-10-13_22:32:19.745 NORMAL Process(1).finish: round 2
+2018-10-13_22:32:19.745 NORMAL Process(5).run: Received {type: nack, originator: 5, recipient: 6} from 6
+2018-10-13_22:32:19.745 DEBUG Main.main: try to join 2
+2018-10-13_22:32:19.745 DEBUG Edge(1<-->6).poll: 6 polling 1 ... received null
+2018-10-13_22:32:19.745 NORMAL Process(6).run: No message from 1
+2018-10-13_22:32:19.745 DEBUG Edge(5<-->6).poll: 6 polling 5 ... received null
+2018-10-13_22:32:19.745 NORMAL Process(6).run: No message from 5
+2018-10-13_22:32:19.745 NORMAL Process(2).finish: round 2
+2018-10-13_22:32:19.745 DEBUG Main.main: try to join 3
+2018-10-13_22:32:19.745 NORMAL Process(3).finish: round 2
+2018-10-13_22:32:19.745 DEBUG Main.main: try to join 4
+2018-10-13_22:32:19.745 NORMAL Process(4).finish: round 2
+2018-10-13_22:32:19.745 DEBUG Main.main: try to join 5
+2018-10-13_22:32:19.745 NORMAL Process(5).finish: round 2
+2018-10-13_22:32:19.745 DEBUG Main.main: try to join 6
+2018-10-13_22:32:19.745 NORMAL Process(6).finish: round 2
+2018-10-13_22:32:19.746 STDOUT Main.main: round 3
+2018-10-13_22:32:19.746 NORMAL Process(1).start: round 3
+2018-10-13_22:32:19.746 NORMAL Process(2).start: round 3
+2018-10-13_22:32:19.746 DEBUG Edge(1<-->2).poll: 1 polling 2 ... received null
+2018-10-13_22:32:19.746 NORMAL Process(3).start: round 3
+2018-10-13_22:32:19.746 NORMAL Process(1).run: No message from 2
+2018-10-13_22:32:19.746 DEBUG Edge(1<-->2).poll: 2 polling 1 ... received {type: nack, originator: 4, recipient: 1}
+2018-10-13_22:32:19.746 DEBUG Edge(1<-->3).poll: 1 polling 3 ... received null
+2018-10-13_22:32:19.746 NORMAL Process(4).start: round 3
+2018-10-13_22:32:19.746 NORMAL Process(2).run: Received {type: nack, originator: 4, recipient: 1} from 1
+2018-10-13_22:32:19.746 DEBUG Edge(1<-->3).poll: 3 polling 1 ... received {type: nack, originator: 4, recipient: 1}
+2018-10-13_22:32:19.746 NORMAL Process(1).run: No message from 3
+2018-10-13_22:32:19.746 NORMAL Process(3).run: Received {type: nack, originator: 4, recipient: 1} from 1
+2018-10-13_22:32:19.746 NORMAL Process(5).start: round 3
+2018-10-13_22:32:19.746 DEBUG Edge(2<-->3).poll: 2 polling 3 ... received {type: explore, originator: 6, recipient: 2}
+2018-10-13_22:32:19.746 DEBUG Edge(2<-->3).poll: 3 polling 2 ... received {type: explore, originator: 6, recipient: 3}
+2018-10-13_22:32:19.746 DEBUG Edge(1<-->6).poll: 1 polling 6 ... received null
+2018-10-13_22:32:19.746 NORMAL Process(3).run: Received {type: explore, originator: 6, recipient: 3} from 2
+2018-10-13_22:32:19.746 NORMAL Process(2).run: Received {type: explore, originator: 6, recipient: 2} from 3
+2018-10-13_22:32:19.746 NORMAL Process(6).start: round 3
+2018-10-13_22:32:19.746 NORMAL Process(1).run: No message from 6
+2018-10-13_22:32:19.747 DEBUG Process(3).run: I must respond to 2
+2018-10-13_22:32:19.747 DEBUG Process(3).responseFrom: Delete awaitingResponse(2, {type: explore, originator: 6, recipient: 2})
+2018-10-13_22:32:19.747 DEBUG Edge(4<-->5).poll: 5 polling 4 ... received null
+2018-10-13_22:32:19.747 DEBUG Process(2).run: I must respond to 3
+2018-10-13_22:32:19.747 DEBUG Edge(2<-->4).poll: 4 polling 2 ... received {type: explore, originator: 6, recipient: 4}
+2018-10-13_22:32:19.747 NORMAL Process(5).run: No message from 4
+2018-10-13_22:32:19.747 DEBUG Edge(3<-->4).poll: 3 polling 4 ... received {type: explore, originator: 6, recipient: 3}
+2018-10-13_22:32:19.747 DEBUG Process(2).responseFrom: Delete awaitingResponse(3, {type: explore, originator: 6, recipient: 3})
+2018-10-13_22:32:19.747 NORMAL Process(4).run: Received {type: explore, originator: 6, recipient: 4} from 2
+2018-10-13_22:32:19.747 NORMAL Process(3).run: Received {type: explore, originator: 6, recipient: 3} from 4
+2018-10-13_22:32:19.747 DEBUG Edge(5<-->6).poll: 5 polling 6 ... received null
+2018-10-13_22:32:19.747 DEBUG Edge(2<-->4).poll: 2 polling 4 ... received {type: explore, originator: 6, recipient: 2}
+2018-10-13_22:32:19.747 DEBUG Process(3).run: I must respond to 4
+2018-10-13_22:32:19.747 DEBUG Process(4).run: I must respond to 2
+2018-10-13_22:32:19.747 NORMAL Process(5).run: No message from 6
+2018-10-13_22:32:19.750 DEBUG Main.main: try to join 1
+2018-10-13_22:32:19.750 DEBUG Process(4).responseFrom: Delete awaitingResponse(2, {type: explore, originator: 6, recipient: 2})
+2018-10-13_22:32:19.750 NORMAL Process(2).run: Received {type: explore, originator: 6, recipient: 2} from 4
+2018-10-13_22:32:19.750 NORMAL Process(1).finish: round 3
+2018-10-13_22:32:19.750 DEBUG Edge(1<-->6).poll: 6 polling 1 ... received null
+2018-10-13_22:32:19.750 DEBUG Edge(3<-->4).poll: 4 polling 3 ... received {type: explore, originator: 6, recipient: 4}
+2018-10-13_22:32:19.750 DEBUG Process(3).responseFrom: Delete awaitingResponse(4, {type: explore, originator: 6, recipient: 4})
+2018-10-13_22:32:19.750 DEBUG Process(2).run: I must respond to 4
+2018-10-13_22:32:19.750 NORMAL Process(6).run: No message from 1
+2018-10-13_22:32:19.750 DEBUG Main.main: try to join 2
+2018-10-13_22:32:19.750 NORMAL Process(4).run: Received {type: explore, originator: 6, recipient: 4} from 3
+2018-10-13_22:32:19.750 DEBUG Edge(5<-->6).poll: 6 polling 5 ... received null
+2018-10-13_22:32:19.750 NORMAL Process(6).run: No message from 5
+2018-10-13_22:32:19.750 NORMAL Process(3).run: Send {type: nack, originator: 6, recipient: 3} to 2
+2018-10-13_22:32:19.750 DEBUG Process(2).responseFrom: Delete awaitingResponse(4, {type: explore, originator: 6, recipient: 4})
+2018-10-13_22:32:19.750 DEBUG Process(4).run: I must respond to 3
+2018-10-13_22:32:19.750 DEBUG Edge(2<-->3).send: Message on queue from 3 to 2
+2018-10-13_22:32:19.750 DEBUG Process(4).responseFrom: Delete awaitingResponse(3, {type: explore, originator: 6, recipient: 3})
+2018-10-13_22:32:19.750 NORMAL Process(2).run: Send {type: nack, originator: 6, recipient: 2} to 3
+2018-10-13_22:32:19.750 DEBUG Edge(4<-->5).poll: 4 polling 5 ... received null
+2018-10-13_22:32:19.750 NORMAL Process(3).run: Send {type: nack, originator: 6, recipient: 3} to 4
+2018-10-13_22:32:19.750 DEBUG Edge(2<-->3).send: Message on queue from 2 to 3
+2018-10-13_22:32:19.750 NORMAL Process(4).run: No message from 5
+2018-10-13_22:32:19.751 DEBUG Edge(3<-->4).send: Message on queue from 3 to 4
+2018-10-13_22:32:19.751 NORMAL Process(4).run: Send {type: nack, originator: 6, recipient: 4} to 2
+2018-10-13_22:32:19.751 NORMAL Process(2).run: Send {type: nack, originator: 6, recipient: 2} to 4
+2018-10-13_22:32:19.751 NORMAL Process(3).run: I have all my responses.
+2018-10-13_22:32:19.751 DEBUG Edge(2<-->4).send: Message on queue from 4 to 2
+2018-10-13_22:32:19.751 DEBUG Edge(2<-->4).send: Message on queue from 2 to 4
+2018-10-13_22:32:19.751 NORMAL Process(4).run: Send {type: nack, originator: 6, recipient: 4} to 3
+2018-10-13_22:32:19.751 NORMAL Process(2).run: I have all my responses.
+2018-10-13_22:32:19.751 DEBUG Edge(3<-->4).send: Message on queue from 4 to 3
+2018-10-13_22:32:19.751 NORMAL Process(4).run: I have all my responses.
+2018-10-13_22:32:19.754 NORMAL Process(4).run: Send {type: ack, originator: 6, recipient: 4} to parent(5)
+2018-10-13_22:32:19.754 NORMAL Process(2).run: Send {type: ack, originator: 6, recipient: 2} to parent(1)
+2018-10-13_22:32:19.754 NORMAL Process(3).run: Send {type: ack, originator: 6, recipient: 3} to parent(1)
+2018-10-13_22:32:19.754 DEBUG Edge(1<-->2).send: Message on queue from 2 to 1
+2018-10-13_22:32:19.754 DEBUG Edge(4<-->5).send: Message on queue from 4 to 5
+2018-10-13_22:32:19.754 DEBUG Edge(1<-->3).send: Message on queue from 3 to 1
+2018-10-13_22:32:19.754 NORMAL Process(2).finish: round 3
+2018-10-13_22:32:19.754 DEBUG Main.main: try to join 3
+2018-10-13_22:32:19.754 NORMAL Process(3).finish: round 3
+2018-10-13_22:32:19.754 DEBUG Main.main: try to join 4
+2018-10-13_22:32:19.754 NORMAL Process(4).finish: round 3
+2018-10-13_22:32:19.754 DEBUG Main.main: try to join 5
+2018-10-13_22:32:19.754 NORMAL Process(5).finish: round 3
+2018-10-13_22:32:19.755 DEBUG Main.main: try to join 6
+2018-10-13_22:32:19.755 NORMAL Process(6).finish: round 3
+2018-10-13_22:32:19.755 STDOUT Main.main: round 4
+2018-10-13_22:32:19.755 NORMAL Process(1).start: round 4
+2018-10-13_22:32:19.755 NORMAL Process(2).start: round 4
+2018-10-13_22:32:19.755 DEBUG Edge(1<-->2).poll: 1 polling 2 ... received {type: ack, originator: 6, recipient: 2}
+2018-10-13_22:32:19.755 NORMAL Process(3).start: round 4
+2018-10-13_22:32:19.755 NORMAL Process(1).run: Received {type: ack, originator: 6, recipient: 2} from 2
+2018-10-13_22:32:19.755 DEBUG Edge(1<-->2).poll: 2 polling 1 ... received null
+2018-10-13_22:32:19.755 NORMAL Process(4).start: round 4
+2018-10-13_22:32:19.755 NORMAL Process(2).run: No message from 1
+2018-10-13_22:32:19.755 DEBUG Edge(2<-->3).poll: 2 polling 3 ... received {type: nack, originator: 6, recipient: 3}
+2018-10-13_22:32:19.755 DEBUG Edge(1<-->3).poll: 3 polling 1 ... received null
+2018-10-13_22:32:19.755 NORMAL Process(2).run: Received {type: nack, originator: 6, recipient: 3} from 3
+2018-10-13_22:32:19.755 NORMAL Process(3).run: No message from 1
+2018-10-13_22:32:19.755 DEBUG Edge(2<-->4).poll: 2 polling 4 ... received {type: nack, originator: 6, recipient: 4}
+2018-10-13_22:32:19.755 DEBUG Edge(2<-->3).poll: 3 polling 2 ... received {type: nack, originator: 6, recipient: 2}
+2018-10-13_22:32:19.755 NORMAL Process(2).run: Received {type: nack, originator: 6, recipient: 4} from 4
+2018-10-13_22:32:19.755 NORMAL Process(3).run: Received {type: nack, originator: 6, recipient: 2} from 2
+2018-10-13_22:32:19.755 NORMAL Process(2).run: I have all my responses.
+2018-10-13_22:32:19.755 DEBUG Edge(3<-->4).poll: 3 polling 4 ... received {type: nack, originator: 6, recipient: 4}
+2018-10-13_22:32:19.756 NORMAL Process(3).run: Received {type: nack, originator: 6, recipient: 4} from 4
+2018-10-13_22:32:19.756 NORMAL Process(3).run: I have all my responses.
+2018-10-13_22:32:19.761 DEBUG Edge(2<-->4).poll: 4 polling 2 ... received {type: nack, originator: 6, recipient: 2}
+2018-10-13_22:32:19.761 NORMAL Process(4).run: Received {type: nack, originator: 6, recipient: 2} from 2
+2018-10-13_22:32:19.761 NORMAL Process(5).start: round 4
+2018-10-13_22:32:19.761 DEBUG Edge(3<-->4).poll: 4 polling 3 ... received {type: nack, originator: 6, recipient: 3}
+2018-10-13_22:32:19.761 NORMAL Process(4).run: Received {type: nack, originator: 6, recipient: 3} from 3
+2018-10-13_22:32:19.761 NORMAL Process(6).start: round 4
+2018-10-13_22:32:19.761 DEBUG Edge(4<-->5).poll: 4 polling 5 ... received null
+2018-10-13_22:32:19.761 DEBUG Edge(4<-->5).poll: 5 polling 4 ... received {type: ack, originator: 6, recipient: 4}
+2018-10-13_22:32:19.762 NORMAL Process(5).run: Received {type: ack, originator: 6, recipient: 4} from 4
+2018-10-13_22:32:19.762 NORMAL Process(4).run: No message from 5
+2018-10-13_22:32:19.762 DEBUG Main.main: try to join 1
+2018-10-13_22:32:19.762 DEBUG Edge(1<-->6).poll: 6 polling 1 ... received null
+2018-10-13_22:32:19.762 NORMAL Process(4).run: I have all my responses.
+2018-10-13_22:32:19.762 NORMAL Process(6).run: No message from 1
+2018-10-13_22:32:19.762 DEBUG Edge(5<-->6).poll: 6 polling 5 ... received null
+2018-10-13_22:32:19.762 NORMAL Process(6).run: No message from 5
+2018-10-13_22:32:19.762 DEBUG Process(1).run: 2 sent me an ACK, he is my newest child.
+2018-10-13_22:32:19.763 DEBUG Process(1).responseFrom: Delete awaitingResponse(2, {type: explore, originator: 6, recipient: 2})
+2018-10-13_22:32:19.763 DEBUG Process(5).run: 4 sent me an ACK, he is my newest child.
+2018-10-13_22:32:19.763 DEBUG Edge(1<-->3).poll: 1 polling 3 ... received {type: ack, originator: 6, recipient: 3}
+2018-10-13_22:32:19.763 DEBUG Process(5).responseFrom: Delete awaitingResponse(4, {type: explore, originator: 6, recipient: 4})
+2018-10-13_22:32:19.763 NORMAL Process(1).run: Received {type: ack, originator: 6, recipient: 3} from 3
+2018-10-13_22:32:19.763 DEBUG Process(1).run: 3 sent me an ACK, he is my newest child.
+2018-10-13_22:32:19.763 DEBUG Edge(5<-->6).poll: 5 polling 6 ... received null
+2018-10-13_22:32:19.763 DEBUG Process(1).responseFrom: Delete awaitingResponse(3, {type: explore, originator: 6, recipient: 3})
+2018-10-13_22:32:19.763 NORMAL Process(5).run: No message from 6
+2018-10-13_22:32:19.763 DEBUG Edge(1<-->6).poll: 1 polling 6 ... received null
+2018-10-13_22:32:19.763 NORMAL Process(1).run: No message from 6
+2018-10-13_22:32:19.763 NORMAL Process(5).run: I have all my responses.
+2018-10-13_22:32:19.763 NORMAL Process(1).run: I have all my responses.
+2018-10-13_22:32:19.763 NORMAL Process(1).run: Send {type: ack, originator: 6, recipient: 1} to parent(6)
+2018-10-13_22:32:19.763 NORMAL Process(5).run: Send {type: ack, originator: 6, recipient: 5} to parent(6)
+2018-10-13_22:32:19.763 DEBUG Edge(1<-->6).send: Message on queue from 1 to 6
+2018-10-13_22:32:19.763 DEBUG Edge(5<-->6).send: Message on queue from 5 to 6
+2018-10-13_22:32:19.763 NORMAL Process(1).finish: round 4
+2018-10-13_22:32:19.763 DEBUG Main.main: try to join 2
+2018-10-13_22:32:19.763 NORMAL Process(2).finish: round 4
+2018-10-13_22:32:19.763 DEBUG Main.main: try to join 3
+2018-10-13_22:32:19.763 NORMAL Process(3).finish: round 4
+2018-10-13_22:32:19.763 DEBUG Main.main: try to join 4
+2018-10-13_22:32:19.763 NORMAL Process(4).finish: round 4
+2018-10-13_22:32:19.763 DEBUG Main.main: try to join 5
+2018-10-13_22:32:19.763 NORMAL Process(5).finish: round 4
+2018-10-13_22:32:19.763 DEBUG Main.main: try to join 6
+2018-10-13_22:32:19.763 NORMAL Process(6).finish: round 4
+2018-10-13_22:32:19.763 STDOUT Main.main: round 5
+2018-10-13_22:32:19.764 NORMAL Process(1).start: round 5
+2018-10-13_22:32:19.764 NORMAL Process(2).start: round 5
+2018-10-13_22:32:19.764 DEBUG Edge(1<-->2).poll: 1 polling 2 ... received null
+2018-10-13_22:32:19.764 NORMAL Process(3).start: round 5
+2018-10-13_22:32:19.764 NORMAL Process(1).run: No message from 2
+2018-10-13_22:32:19.764 DEBUG Edge(1<-->2).poll: 2 polling 1 ... received null
+2018-10-13_22:32:19.764 DEBUG Edge(1<-->3).poll: 1 polling 3 ... received null
+2018-10-13_22:32:19.764 NORMAL Process(2).run: No message from 1
+2018-10-13_22:32:19.764 NORMAL Process(1).run: No message from 3
+2018-10-13_22:32:19.764 DEBUG Edge(1<-->6).poll: 1 polling 6 ... received null
+2018-10-13_22:32:19.764 DEBUG Edge(2<-->3).poll: 2 polling 3 ... received null
+2018-10-13_22:32:19.764 NORMAL Process(1).run: No message from 6
+2018-10-13_22:32:19.764 NORMAL Process(2).run: No message from 3
+2018-10-13_22:32:19.764 NORMAL Process(1).run: I have all my responses.
+2018-10-13_22:32:19.764 DEBUG Edge(2<-->4).poll: 2 polling 4 ... received null
+2018-10-13_22:32:19.764 NORMAL Process(2).run: No message from 4
+2018-10-13_22:32:19.764 NORMAL Process(2).run: I have all my responses.
+2018-10-13_22:32:19.765 NORMAL Process(4).start: round 5
+2018-10-13_22:32:19.765 DEBUG Edge(1<-->3).poll: 3 polling 1 ... received null
+2018-10-13_22:32:19.765 NORMAL Process(3).run: No message from 1
+2018-10-13_22:32:19.765 NORMAL Process(5).start: round 5
+2018-10-13_22:32:19.765 DEBUG Edge(2<-->3).poll: 3 polling 2 ... received null
+2018-10-13_22:32:19.765 DEBUG Edge(2<-->4).poll: 4 polling 2 ... received null
+2018-10-13_22:32:19.765 NORMAL Process(3).run: No message from 2
+2018-10-13_22:32:19.765 NORMAL Process(6).start: round 5
+2018-10-13_22:32:19.765 NORMAL Process(4).run: No message from 2
+2018-10-13_22:32:19.765 DEBUG Edge(3<-->4).poll: 3 polling 4 ... received null
+2018-10-13_22:32:19.766 DEBUG Edge(1<-->6).poll: 6 polling 1 ... received {type: ack, originator: 6, recipient: 1}
+2018-10-13_22:32:19.766 DEBUG Main.main: try to join 1
+2018-10-13_22:32:19.765 DEBUG Edge(4<-->5).poll: 5 polling 4 ... received null
+2018-10-13_22:32:19.765 DEBUG Edge(3<-->4).poll: 4 polling 3 ... received null
+2018-10-13_22:32:19.766 NORMAL Process(6).run: Received {type: ack, originator: 6, recipient: 1} from 1
+2018-10-13_22:32:19.766 NORMAL Process(5).run: No message from 4
+2018-10-13_22:32:19.766 NORMAL Process(1).finish: round 5
+2018-10-13_22:32:19.766 NORMAL Process(4).run: No message from 3
+2018-10-13_22:32:19.766 NORMAL Process(3).run: No message from 4
+2018-10-13_22:32:19.766 DEBUG Process(6).run: 1 sent me an ACK, he is my newest child.
+2018-10-13_22:32:19.766 DEBUG Main.main: try to join 2
+2018-10-13_22:32:19.766 DEBUG Edge(4<-->5).poll: 4 polling 5 ... received null
+2018-10-13_22:32:19.766 NORMAL Process(2).finish: round 5
+2018-10-13_22:32:19.766 DEBUG Main.main: try to join 3
+2018-10-13_22:32:19.766 NORMAL Process(4).run: No message from 5
+2018-10-13_22:32:19.766 DEBUG Process(6).responseFrom: Delete awaitingResponse(1, {type: explore, originator: 6, recipient: 1})
+2018-10-13_22:32:19.766 NORMAL Process(3).run: I have all my responses.
+2018-10-13_22:32:19.766 NORMAL Process(4).run: I have all my responses.
+2018-10-13_22:32:19.766 DEBUG Edge(5<-->6).poll: 5 polling 6 ... received null
+2018-10-13_22:32:19.766 DEBUG Edge(5<-->6).poll: 6 polling 5 ... received {type: ack, originator: 6, recipient: 5}
+2018-10-13_22:32:19.766 NORMAL Process(3).finish: round 5
+2018-10-13_22:32:19.768 NORMAL Process(6).run: Received {type: ack, originator: 6, recipient: 5} from 5
+2018-10-13_22:32:19.768 NORMAL Process(5).run: No message from 6
+2018-10-13_22:32:19.768 DEBUG Process(6).run: 5 sent me an ACK, he is my newest child.
+2018-10-13_22:32:19.768 DEBUG Main.main: try to join 4
+2018-10-13_22:32:19.768 NORMAL Process(5).run: I have all my responses.
+2018-10-13_22:32:19.768 DEBUG Process(6).responseFrom: Delete awaitingResponse(5, {type: explore, originator: 6, recipient: 5})
+2018-10-13_22:32:19.768 NORMAL Process(4).finish: round 5
+2018-10-13_22:32:19.769 NORMAL Process(6).run: I have all my responses.
+2018-10-13_22:32:19.769 DEBUG Main.main: try to join 5
+2018-10-13_22:32:19.769 NORMAL Process(6).run: I am the leader. Send {type: leader, originator: 6, recipient: 1}
+2018-10-13_22:32:19.769 DEBUG Edge(1<-->6).send: Message on queue from 6 to 1
+2018-10-13_22:32:19.769 NORMAL Process(6).run: I am the leader. Send {type: leader, originator: 6, recipient: 5}
+2018-10-13_22:32:19.769 DEBUG Edge(5<-->6).send: Message on queue from 6 to 5
+2018-10-13_22:32:19.769 NORMAL Process(5).finish: round 5
+2018-10-13_22:32:19.769 DEBUG Main.main: try to join 6
+2018-10-13_22:32:19.769 NORMAL Process(6).finish: round 5
+2018-10-13_22:32:19.769 STDOUT Main.main: round 6
+2018-10-13_22:32:19.770 NORMAL Process(1).start: round 6
+2018-10-13_22:32:19.770 NORMAL Process(2).start: round 6
+2018-10-13_22:32:19.770 NORMAL Process(3).start: round 6
+2018-10-13_22:32:19.770 DEBUG Edge(1<-->2).poll: 1 polling 2 ... received null
+2018-10-13_22:32:19.770 NORMAL Process(1).run: No message from 2
+2018-10-13_22:32:19.770 DEBUG Edge(1<-->2).poll: 2 polling 1 ... received null
+2018-10-13_22:32:19.770 DEBUG Edge(1<-->3).poll: 1 polling 3 ... received null
+2018-10-13_22:32:19.770 NORMAL Process(2).run: No message from 1
+2018-10-13_22:32:19.770 NORMAL Process(1).run: No message from 3
+2018-10-13_22:32:19.770 DEBUG Edge(2<-->3).poll: 2 polling 3 ... received null
+2018-10-13_22:32:19.770 DEBUG Edge(1<-->6).poll: 1 polling 6 ... received {type: leader, originator: 6, recipient: 1}
+2018-10-13_22:32:19.770 NORMAL Process(1).run: Received {type: leader, originator: 6, recipient: 1} from 6
+2018-10-13_22:32:19.770 NORMAL Process(2).run: No message from 3
+2018-10-13_22:32:19.770 NORMAL Process(1).run: Just found out who the leader is
+2018-10-13_22:32:19.770 DEBUG Edge(2<-->4).poll: 2 polling 4 ... received null
+2018-10-13_22:32:19.770 NORMAL Process(2).run: No message from 4
+2018-10-13_22:32:19.770 NORMAL Process(2).run: I have all my responses.
+2018-10-13_22:32:19.770 NORMAL Process(1).run: Forward {type: leader, originator: 6, recipient: 2}
+2018-10-13_22:32:19.770 DEBUG Edge(1<-->2).send: Message on queue from 1 to 2
+2018-10-13_22:32:19.770 NORMAL Process(1).run: Forward {type: leader, originator: 6, recipient: 3}
+2018-10-13_22:32:19.771 DEBUG Edge(1<-->3).send: Message on queue from 1 to 3
+2018-10-13_22:32:19.771 NORMAL Process(4).start: round 6
+2018-10-13_22:32:19.771 DEBUG Edge(1<-->3).poll: 3 polling 1 ... received {type: leader, originator: 6, recipient: 3}
+2018-10-13_22:32:19.771 NORMAL Process(3).run: Received {type: leader, originator: 6, recipient: 3} from 1
+2018-10-13_22:32:19.771 NORMAL Process(5).start: round 6
+2018-10-13_22:32:19.771 NORMAL Process(3).run: Just found out who the leader is
+2018-10-13_22:32:19.771 DEBUG Edge(2<-->4).poll: 4 polling 2 ... received null
+2018-10-13_22:32:19.771 DEBUG Edge(2<-->3).poll: 3 polling 2 ... received null
+2018-10-13_22:32:19.771 NORMAL Process(6).start: round 6
+2018-10-13_22:32:19.771 NORMAL Process(4).run: No message from 2
+2018-10-13_22:32:19.771 NORMAL Process(3).run: No message from 2
+2018-10-13_22:32:19.771 DEBUG Edge(3<-->4).poll: 4 polling 3 ... received null
+2018-10-13_22:32:19.771 DEBUG Edge(4<-->5).poll: 5 polling 4 ... received null
+2018-10-13_22:32:19.771 DEBUG Edge(3<-->4).poll: 3 polling 4 ... received null
+2018-10-13_22:32:19.771 DEBUG Main.main: try to join 1
+2018-10-13_22:32:19.771 DEBUG Edge(1<-->6).poll: 6 polling 1 ... received null
+2018-10-13_22:32:19.771 NORMAL Process(3).run: No message from 4
+2018-10-13_22:32:19.771 NORMAL Process(1).finish: round 6
+2018-10-13_22:32:19.771 NORMAL Process(6).run: No message from 1
+2018-10-13_22:32:19.771 NORMAL Process(4).run: No message from 3
+2018-10-13_22:32:19.772 DEBUG Edge(5<-->6).poll: 6 polling 5 ... received null
+2018-10-13_22:32:19.772 NORMAL Process(6).run: No message from 5
+2018-10-13_22:32:19.772 NORMAL Process(6).run: already terminated
+2018-10-13_22:32:19.771 NORMAL Process(5).run: No message from 4
+2018-10-13_22:32:19.772 DEBUG Main.main: try to join 2
+2018-10-13_22:32:19.772 DEBUG Edge(4<-->5).poll: 4 polling 5 ... received null
+2018-10-13_22:32:19.773 DEBUG Edge(5<-->6).poll: 5 polling 6 ... received {type: leader, originator: 6, recipient: 5}
+2018-10-13_22:32:19.773 NORMAL Process(2).finish: round 6
+2018-10-13_22:32:19.773 NORMAL Process(4).run: No message from 5
+2018-10-13_22:32:19.774 NORMAL Process(4).run: I have all my responses.
+2018-10-13_22:32:19.774 NORMAL Process(5).run: Received {type: leader, originator: 6, recipient: 5} from 6
+2018-10-13_22:32:19.774 DEBUG Main.main: try to join 3
+2018-10-13_22:32:19.774 NORMAL Process(3).finish: round 6
+2018-10-13_22:32:19.776 NORMAL Process(5).run: Just found out who the leader is
+2018-10-13_22:32:19.776 DEBUG Main.main: try to join 4
+2018-10-13_22:32:19.776 NORMAL Process(5).run: Forward {type: leader, originator: 6, recipient: 4}
+2018-10-13_22:32:19.776 NORMAL Process(4).finish: round 6
+2018-10-13_22:32:19.776 DEBUG Edge(4<-->5).send: Message on queue from 5 to 4
+2018-10-13_22:32:19.776 DEBUG Main.main: try to join 5
+2018-10-13_22:32:19.776 NORMAL Process(5).finish: round 6
+2018-10-13_22:32:19.777 DEBUG Main.main: try to join 6
+2018-10-13_22:32:19.777 NORMAL Process(6).finish: round 6
+2018-10-13_22:32:19.777 STDOUT Main.main: round 7
+2018-10-13_22:32:19.777 NORMAL Process(1).start: round 7
+2018-10-13_22:32:19.777 NORMAL Process(2).start: round 7
+2018-10-13_22:32:19.777 DEBUG Edge(1<-->2).poll: 1 polling 2 ... received null
+2018-10-13_22:32:19.777 NORMAL Process(3).start: round 7
+2018-10-13_22:32:19.777 NORMAL Process(1).run: No message from 2
+2018-10-13_22:32:19.777 DEBUG Edge(1<-->3).poll: 1 polling 3 ... received null
+2018-10-13_22:32:19.777 DEBUG Edge(1<-->2).poll: 2 polling 1 ... received {type: leader, originator: 6, recipient: 2}
+2018-10-13_22:32:19.777 NORMAL Process(1).run: No message from 3
+2018-10-13_22:32:19.777 NORMAL Process(4).start: round 7
+2018-10-13_22:32:19.777 NORMAL Process(2).run: Received {type: leader, originator: 6, recipient: 2} from 1
+2018-10-13_22:32:19.777 DEBUG Edge(1<-->6).poll: 1 polling 6 ... received null
+2018-10-13_22:32:19.777 DEBUG Edge(1<-->3).poll: 3 polling 1 ... received null
+2018-10-13_22:32:19.777 NORMAL Process(2).run: Just found out who the leader is
+2018-10-13_22:32:19.777 NORMAL Process(1).run: No message from 6
+2018-10-13_22:32:19.777 NORMAL Process(3).run: No message from 1
+2018-10-13_22:32:19.777 NORMAL Process(1).run: already terminated
+2018-10-13_22:32:19.777 DEBUG Edge(2<-->3).poll: 2 polling 3 ... received null
+2018-10-13_22:32:19.777 DEBUG Edge(2<-->3).poll: 3 polling 2 ... received null
+2018-10-13_22:32:19.777 NORMAL Process(2).run: No message from 3
+2018-10-13_22:32:19.777 NORMAL Process(3).run: No message from 2
+2018-10-13_22:32:19.777 DEBUG Edge(2<-->4).poll: 2 polling 4 ... received null
+2018-10-13_22:32:19.777 DEBUG Edge(3<-->4).poll: 3 polling 4 ... received null
+2018-10-13_22:32:19.777 NORMAL Process(2).run: No message from 4
+2018-10-13_22:32:19.777 NORMAL Process(3).run: No message from 4
+2018-10-13_22:32:19.777 NORMAL Process(3).run: already terminated
+2018-10-13_22:32:19.778 NORMAL Process(5).start: round 7
+2018-10-13_22:32:19.778 DEBUG Edge(2<-->4).poll: 4 polling 2 ... received null
+2018-10-13_22:32:19.778 NORMAL Process(4).run: No message from 2
+2018-10-13_22:32:19.778 DEBUG Edge(3<-->4).poll: 4 polling 3 ... received null
+2018-10-13_22:32:19.778 NORMAL Process(4).run: No message from 3
+2018-10-13_22:32:19.778 DEBUG Edge(4<-->5).poll: 4 polling 5 ... received {type: leader, originator: 6, recipient: 4}
+2018-10-13_22:32:19.778 NORMAL Process(4).run: Received {type: leader, originator: 6, recipient: 4} from 5
+2018-10-13_22:32:19.778 NORMAL Process(4).run: Just found out who the leader is
+2018-10-13_22:32:19.780 NORMAL Process(6).start: round 7
+2018-10-13_22:32:19.780 DEBUG Edge(4<-->5).poll: 5 polling 4 ... received null
+2018-10-13_22:32:19.780 DEBUG Main.main: try to join 1
+2018-10-13_22:32:19.780 NORMAL Process(5).run: No message from 4
+2018-10-13_22:32:19.780 NORMAL Process(1).finish: round 7
+2018-10-13_22:32:19.780 DEBUG Edge(1<-->6).poll: 6 polling 1 ... received null
+2018-10-13_22:32:19.780 DEBUG Edge(5<-->6).poll: 5 polling 6 ... received null
+2018-10-13_22:32:19.780 NORMAL Process(6).run: No message from 1
+2018-10-13_22:32:19.780 DEBUG Main.main: try to join 2
+2018-10-13_22:32:19.780 NORMAL Process(5).run: No message from 6
+2018-10-13_22:32:19.780 DEBUG Edge(5<-->6).poll: 6 polling 5 ... received null
+2018-10-13_22:32:19.780 NORMAL Process(2).finish: round 7
+2018-10-13_22:32:19.780 NORMAL Process(5).run: already terminated
+2018-10-13_22:32:19.780 NORMAL Process(6).run: No message from 5
+2018-10-13_22:32:19.780 DEBUG Main.main: try to join 3
+2018-10-13_22:32:19.780 NORMAL Process(6).run: already terminated
+2018-10-13_22:32:19.780 NORMAL Process(3).finish: round 7
+2018-10-13_22:32:19.780 DEBUG Main.main: try to join 4
+2018-10-13_22:32:19.780 NORMAL Process(4).finish: round 7
+2018-10-13_22:32:19.780 DEBUG Main.main: try to join 5
+2018-10-13_22:32:19.780 NORMAL Process(5).finish: round 7
+2018-10-13_22:32:19.780 DEBUG Main.main: try to join 6
+2018-10-13_22:32:19.780 NORMAL Process(6).finish: round 7
+2018-10-13_22:32:19.789 STDOUT Main.main: 1 parent: 6, children: {2, 3}, leader: false
+2018-10-13_22:32:19.790 STDOUT Main.main: 2 parent: 1, children: {}, leader: false
+2018-10-13_22:32:19.790 STDOUT Main.main: 3 parent: 1, children: {}, leader: false
+2018-10-13_22:32:19.790 STDOUT Main.main: 4 parent: 5, children: {}, leader: false
+2018-10-13_22:32:19.790 STDOUT Main.main: 5 parent: 6, children: {4}, leader: false
+2018-10-13_22:32:19.790 STDOUT Main.main: 6 parent: None, children: {1, 5}, leader: true
