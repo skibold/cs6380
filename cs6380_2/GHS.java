@@ -40,14 +40,14 @@ public class GHS {
 		}
 
 		// topology
-		Integer clock = 0;
+		Clock clock = new Clock();
 		ArrayList<Edge> edges = new ArrayList<Edge>();
 		i = 0;
 		while((line = br.readLine()) != null) {
 			StringTokenizer st = new StringTokenizer(line, ",");
 			if(st.countTokens() != num_procs) {
 				Logger.error(classname, method, "Connectivity matrix for process(" + ids[i] + 
-					") gives edges for " + line.length() + " processes instead of " + num_procs);
+					") gives edges for " + st.countTokens() + " processes instead of " + num_procs);
 				System.exit(1);
 			}
 
@@ -82,16 +82,16 @@ public class GHS {
 		boolean terminate = false;
 		try {
 			while(!terminate) {
-				Logger.toScreen(classname, method, "step " + clock);
+				Logger.toScreen(classname, method, "step " + clock.read());
 				// start this round for each proc
 				for(Process p : procs)
 					p.start();
 				// wait for each proc to finish this round
 				for(Process p : procs) {
-					Logger.debug(classname, method, "try to join " + p.getId());
+					Logger.debug(classname, method, "try to join process " + p.getId());
 					p.join();
 				}
-				clock++;
+				clock.tick();
 				// see if all procs are terminated
 				terminate = true; // if even 1 proc is not terminated this will flip to false, which we want
 				for(Process p : procs)

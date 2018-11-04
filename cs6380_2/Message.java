@@ -10,6 +10,9 @@ public class Message {
 	private static String NACK = "nack";
 	private static String LEAD = "leader";
 */
+	// TODO these are temporary to test network delays, remove later
+	private static String DUM = "dummy";
+	private static String ACK = "ack";
 
 	private String type; // must be one of TODO comment the new enums here
 	private int originator; // the process id which sent this message, set this for explore messages only
@@ -25,9 +28,33 @@ public class Message {
 		this.delay = 0;
 		this.tostr = "{type: " + type + 
 				", originator: " + originator + 
-				", recipient: " + recipient + 
-				", delay: " + delay +"}";
+				", recipient: " + recipient;
 	}
+
+	public Message(Message m) {
+		this.type = m.type();
+		this.originator = m.originator();
+		this.recipient = m.recipient();
+		this.delay = m.getDelay();
+		this.tostr = "{type: " + type + 
+				", originator: " + originator + 
+				", recipient: " + recipient;
+	}
+
+	// TODO these are temporary to test network delays, remove later
+	public static Message dummy(int o, int r) {
+		return new Message(DUM, o, r);
+	}
+	public static Message ack(Message m) {
+		return new Message(ACK, m.originator(), m.recipient());
+	}
+	public boolean isAck() {
+		return ACK.equals(type);
+	}
+	public boolean isDummy() {
+		return DUM.equals(type);
+	}
+	
 /* TODO replace all these with new stuff applicable to GHS algorithm
 	// factory methods to make construction easy
 	public static Message explore(int o, int r) {
@@ -75,6 +102,11 @@ public class Message {
 		return this.delay;
 	}
 
+	// TODO this is temporary to test network delays, remove later
+	public boolean isResponseTo(Message m) {
+		return this.isAck() && m.originator() == this.originator() && m.recipient() == this.recipient;
+	}
+
 	// other utils
 //	public boolean isResponseTo(Message m) {
 //		// if originators and recipients match then m.isExplore and (this.isAck || this.isNack) to m
@@ -85,6 +117,6 @@ public class Message {
 		return new Message(m.type(), m.originator(), r);
 	}
 	public String toString() {
-		return tostr;
+		return tostr + ", delay: " + delay +"}";
 	}
 }

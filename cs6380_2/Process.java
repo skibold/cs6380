@@ -56,26 +56,51 @@ public class Process implements Runnable { //extends Thread {
 	//override
 	public void run() {
 		final String method = "run";
-		/*if(init) {
-			Logger.normal(instancename, method, "Init step, send explore on all edges: " + logEdges);
+		Logger.entering(instancename, method);
+		if(init) {
+			Logger.normal(instancename, method, "Init step, send dummy on all edges: " + logEdges);
 			init = false;
 			for(Integer recipient : edgeMap.keySet()) {
-				Message explore = Message.explore(uid, recipient);
-				awaitingResponse.put(recipient, explore);
-				edgeMap.get(recipient).send(uid, explore);
+				Message dummy = Message.dummy(uid, recipient);
+				awaitingResponse.put(recipient, dummy);
+				edgeMap.get(recipient).send(uid, dummy);
 			}
 			return;
-		}*/
+		}
 
 		// receive all messages on my incident links
 		for(Edge e : edgeMap.values()) {
 			int sender = e.otherSide(uid);
 			Message m = e.poll(uid); // receive a message from process at other end of Edge e
 			if(m == null) {
-				Logger.normal(instancename, method, "No message from " + sender);
+				Logger.normal(instancename, method, "No message from " + sender + " at step  " + (round-1));
 				continue;
 			}
-			Logger.normal(instancename, method, "Received " + m + " from " + sender);			
+			Logger.normal(instancename, method, "Received " + m + " from " + sender + " at step " + (round-1));
+			if(m.isDummy()) {
+				pendingResponse.put(sender,m);
+			} else {
+				responseFrom(sender);
+			}
+		}
+
+		// send acks back
+		ArrayList<Integer> toDelete = new ArrayList<Integer>(); // avoid concurrent modification
+		for(Integer sender : pendingResponse.keySet()) {
+			Message m = pendingResponse.get(sender);
+			Message ack = Message.ack(m);
+			Logger.normal(instancename, method, "Send " + ack + " to " + sender);
+			edgeMap.get(sender).send(uid, ack);
+			toDelete.add(sender);
+		}
+		for(Integer sender : toDelete) {
+			pendingResponse.remove(sender);
+		}
+
+		// terminate if i got all my acks
+		if(awaitingResponse.isEmpty()) {
+			Logger.normal(instancename, method, "I have all my responses.");
+			term = true;
 		}
 
 		

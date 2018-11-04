@@ -10,12 +10,12 @@ public class Edge {
 	private double weight;
 	private String instancename;
 	private Random rand;
-	private Integer clock;
+	private Clock clock;
 	private static final float BOUND = 20.0f;
 	private ConcurrentLinkedQueue<Message> v1producer; // process v1 writes to this, v2 reads
 	private ConcurrentLinkedQueue<Message> v2producer; // process v2 writes to this, v1 reads
 
-	public Edge(int v1, int v2, double weight, Integer clock /*reference to a timer*/) {
+	public Edge(int v1, int v2, double weight, Clock clock /*reference to a timer*/) {
 		this.v1 = v1;
 		this.v2 = v2;
 		this.weight = weight;
@@ -23,23 +23,27 @@ public class Edge {
 		this.v1producer = new ConcurrentLinkedQueue<Message>();
 		this.v2producer = new ConcurrentLinkedQueue<Message>();
 		this.rand = new Random();
+		this.clock = clock;
 		Logger.normal(classname, "Edge", "Creating an edge from " + v1 + " to " + v2);
 	}
 
 	public boolean send(int producerId, Message m) {
+		final String method = "send";
+		Logger.entering(instancename, method);
 		boolean success = false;
-		int delay = clock + (int)(rand.nextFloat() * BOUND);
+		int delay = clock.read() + (int)(rand.nextFloat() * BOUND);
 		m.setDelay(delay);
+		Logger.debug(instancename, method, m.toString());
 		try {
 			if(producerId == v1) {
 				success = v1producer.add(m); 
-				Logger.debug(instancename, "send", "Message on queue from " + v1 + " to " + v2);
+				//Logger.debug(instancename, method, "Message " + m + " on queue from " + v1 + " to " + v2);
 			} else if(producerId == v2) {
 				success = v2producer.add(m); 
-				Logger.debug(instancename, "send", "Message on queue from " + v2 + " to " + v1);
+				//Logger.debug(instancename, method, "Message " + m + " on queue from " + v2 + " to " + v1);
 			} 
 		} catch(NullPointerException e) {
-			Logger.error(instancename, "send", "Error sending message from " + producerId);
+			Logger.error(instancename, method, "Error sending message from " + producerId);
 			success = false;
 		}
 		return success;
@@ -48,15 +52,28 @@ public class Edge {
 	public Message poll(int consumerId) {
 		Message m = null;
 		if(consumerId == v1) {
-			if(v2producer.peek() != null && v2producer.peek().getDelay() >= clock)
+			if(testMsg(v2producer.peek()))
 				m = v2producer.poll();
 			Logger.debug(instancename, "poll", v1 + " polling " + v2 + " ... received " + m);
 		} else if(consumerId == v2) {
-			if(v1producer.peek() != null && v1producer.peek().getDelay() >= clock)
+			if(testMsg(v1producer.peek()))
 				m = v1producer.poll();
 			Logger.debug(instancename, "poll", v2 + " polling " + v1 + " ... received " + m);
 		}
 		return m;
+	}
+
+	private boolean testMsg(Message m) {
+		final String method = "testMsg";
+		if(m == null) {
+			Logger.debug(instancename, method, "Front of queue is null");
+			return false;
+		}
+		if(m.getDelay() > clock.read()) {
+			Logger.debug(instancename, method, "Message still delayed: " + m.getDelay() + " > " + clock.read());
+			return false;
+		}
+		return true;
 	}
 
 	public int otherSide(int id) {
