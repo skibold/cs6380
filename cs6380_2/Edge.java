@@ -93,6 +93,7 @@ public class Edge {
 	// return -1 if e is "heavier" than this edge
 	public int compare(Edge e) {
 		if(this == e) return 0;
+		if(e == null) return 1;
 		if(this.weight == e.weight())
 			if(this.v1 == e.v1())
 				if(this.v2 == e.v2())

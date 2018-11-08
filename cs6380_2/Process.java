@@ -12,30 +12,44 @@ public class Process implements Runnable { //extends Thread {
 	private Thread t;
 	private String instancename;
 	private String logEdges;
+	private String cid;
 	private boolean init, term;
-	private int uid, round;
+	private int uid, round, level;
 	private Edge link2parent;
-	private ArrayList<Integer> links2children;
-	private HashMap<Integer,Edge> edgeMap; // map of recipient process id : edge between me and recipient
-	private HashMap<Integer, Message> awaitingResponse; // I am waiting for ack/nack
+	private Edge mwoe;
+	private Integer connectTrail;
+	private HashMap<Integer, Edge> edgeMap; // hold all edges
+	private ArrayList<Edge> links2children; // might be the same as component edges
+	private ArrayList<Edge> componentEdges; // edges to other processes in my component; these edges are part of the MST
+	private ArrayList<Edge> outsideEdges; // edges which might be outside my component, initially all incident edges
+	private ArrayList<Edge> rejectedEdges; // edges which lead to process in my component, but are not part of the MST
+	private ArrayList<Message> cCastReports; // report messages from children
+	private Integer awaitingResponse; // I am waiting for accept/reject from process with this uid
 	private HashMap<Integer, Message> pendingResponse; // I must respond to the senders with ack/nack
-
+	
 	public Process(int uid, ArrayList<Edge> edges) {
 		this.uid = uid;
+		this.cid = null;
+		this.level = 0;
 		this.round = 0;
 		instancename = classname + "(" + uid + ")";
+		this.cCastReports = new ArrayList<Message>();
+		this.outsideEdges = new ArrayList<Edge>();
+		this.componentEdges = new ArrayList<Edge>();
+		this.links2children = new ArrayList<Edge>(); // maybe the same as component edges
+		this.rejectedEdges = new ArrayList<Edge>();
 		this.edgeMap = new HashMap<Integer, Edge>();
 		this.logEdges = "{";
 		for(Edge e : edges) {
 			logEdges += e.toString() + ", ";
+			insertionSort(outsideEdges, e);
 			edgeMap.put(e.otherSide(uid), e);
 		}
 		this.logEdges += "}";
-		this.awaitingResponse = new HashMap<Integer, Message>();
-		this.pendingResponse = new HashMap<Integer, Message>();
-		this.links2children = new ArrayList<Integer>();
+		this.awaitingResponse = null;
 		this.link2parent = null;
-		this.init = true;
+		this.mwoe = null;
+		this.connectTrail = null;
 		this.term = false;
 
 		Logger.normal(classname, "Process", "created process " + uid + " with edges " + logEdges);
@@ -57,14 +71,9 @@ public class Process implements Runnable { //extends Thread {
 	public void run() {
 		final String method = "run";
 		Logger.entering(instancename, method);
-		if(init) {
-			Logger.normal(instancename, method, "Init step, send dummy on all edges: " + logEdges);
-			init = false;
-			for(Integer recipient : edgeMap.keySet()) {
-				Message dummy = Message.dummy(uid, recipient);
-				awaitingResponse.put(recipient, dummy);
-				edgeMap.get(recipient).send(uid, dummy);
-			}
+		if(level == 0) { // begin by sending init to myself
+			Message init = Message.init(uid, uid, level, cid, null);
+			this.receiveInitMsg(init);
 			return;
 		}
 
@@ -77,33 +86,130 @@ public class Process implements Runnable { //extends Thread {
 				continue;
 			}
 			Logger.normal(instancename, method, "Received " + m + " from " + sender + " at step " + (round-1));
-			if(m.isDummy()) {
-				pendingResponse.put(sender,m);
-			} else {
-				responseFrom(sender);
+
+			if(m.isInit()) {
+				link2parent = e;
+				receiveInitMsg(m);
+			} else if(m.isReport()) {
+				receiveReportMsg(m);
+			} else if(m.isTest()) {
+				receiveTestMsg(m);
+			} else if(m.isAccept()) {
+				receiveAcceptMsg(m);
+			} else if(m.isReject()) {
+				receiveRejectMsg(m);
+			} else if(m.isConnect()) {
+				receiveConnectMsg(m);
 			}
 		}
+	}
 
-		// send acks back
-		ArrayList<Integer> toDelete = new ArrayList<Integer>(); // avoid concurrent modification
-		for(Integer sender : pendingResponse.keySet()) {
-			Message m = pendingResponse.get(sender);
-			Message ack = Message.ack(m);
-			Logger.normal(instancename, method, "Send " + ack + " to " + sender);
-			edgeMap.get(sender).send(uid, ack);
-			toDelete.add(sender);
-		}
-		for(Integer sender : toDelete) {
-			pendingResponse.remove(sender);
-		}
+/*** begin functions to handle receiving different message types ***/
 
-		// terminate if i got all my acks
-		if(awaitingResponse.isEmpty()) {
-			Logger.normal(instancename, method, "I have all my responses.");
-			term = true;
-		}
+	// INIT message
+	private boolean sendInitMsg() {
+		final String method = "sendInitMsg";
+		Logger.entering(instancename, method);
 
-		
+		Logger.exiting(instancename, method);
+		return true;
+	}
+	private void receiveInitMsg(Message m) {
+		final String method = "receiveInitMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);
+	}
+
+	// REPORT message
+	private boolean sendReportMsg() {
+		final String method = "sendReportMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);
+		return true;
+	}
+	private void receiveReportMsg(Message m) {
+		final String method = "receiveReportMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);
+	}
+
+	// TEST message
+	private boolean sendTestMsg(int i) {
+		final String method = "sendTestMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);
+		return true;
+	}
+	private void receiveTestMsg(Message m) {
+		final String method = "receiveTestMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);
+	}
+
+	// ACCEPT message
+	private boolean sendAcceptMsg() {
+		final String method = "sendAcceptMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);
+		return true;
+	}
+	private void receiveAcceptMsg(Message m) {
+		final String method = "receiveAcceptMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);
+	}
+
+	// REJECT message
+	private boolean sendRejectMsg() {
+		final String method = "sendRejectMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);
+		return true;
+	}
+	private void receiveRejectMsg(Message m) {
+		final String method = "receiveRejectMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);		
+	}
+
+	// CONNECT message
+	private boolean sendConnectMsg() {
+		final String method = "sendConnectMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);
+		return true;
+	}
+	private void receiveConnectMsg(Message m) {
+		final String method = "receiveConnectMsg";
+		Logger.entering(instancename, method);
+
+		Logger.exiting(instancename, method);
+	}
+/*** end functions to handle messages ***/
+
+	private void insertionSort(ArrayList<Edge> collection, Edge e) {
+		if(e == null) return;
+		int i;
+		for(i=0; i<collection.size(); i++) {
+			if(collection.get(i).compare(e) == 1) { // e is smaller than element at i
+				break;
+			}
+		}
+		if(i < collection.size()) {
+			collection.add(i,e);
+		} else {
+			collection.add(e);
+		}
 	}
 
 	//override
@@ -113,42 +219,5 @@ public class Process implements Runnable { //extends Thread {
 
 	public boolean isTerminated() {
 		return term;
-	}
-
-	/*public boolean isLeader() {
-		return term && largestId == uid;
-	}*/
-
-	public void reset() {
-		this.round = 0;
-		this.awaitingResponse.clear();
-		this.pendingResponse.clear();
-		this.links2children.clear();
-		this.link2parent = null;
-		this.init = true;
-		this.term = false;
-	}
-
-	public String children() {
-		String children = new String();
-		if(links2children.isEmpty()) return children;
-		for(Integer i : links2children) {
-			children += i.toString() + ", ";
-		}
-		return children.substring(0,children.length()-2);
-	}
-
-	public String parent() {
-		if(link2parent == null) return "None";
-		return Integer.toString(link2parent.otherSide(uid));
-	}
-
-	private void responseFrom(int sender) {
-		// was I waiting for a response from this other process?
-		// if so, now I have it, so delete the waiting flag
-		if(awaitingResponse.containsKey(sender)) {
-			Logger.debug(instancename, "responseFrom", "Delete awaitingResponse(" + sender + ", " + awaitingResponse.get(sender) + ")");
-			awaitingResponse.remove(sender);
-		}
 	}
 }
