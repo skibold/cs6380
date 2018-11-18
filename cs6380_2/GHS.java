@@ -14,8 +14,19 @@ public class GHS {
 	public static void main(String[] args) throws IOException {
 		String method = "main";
 
+		// check for input file
+		if(args.length == 0) {
+			System.err.println("You must provide an input text file");
+			System.exit(1);
+		}
 		String input = args[0];
-		Logger.init(input+".log", true);
+
+		// setup logger
+		boolean debug = false;
+		if(args.length > 1) {
+			debug = (args[1].equalsIgnoreCase("d"));
+		}
+		Logger.init(input+".log", debug);
 
 		String line;
 		BufferedReader br = new BufferedReader(new FileReader(input));
@@ -80,9 +91,9 @@ public class GHS {
 
 		// run
 		boolean terminate = false;
+		boolean exception = false;
 		try {
 			while(!terminate) {
-				Logger.toScreen(classname, method, "step " + clock.read());
 				// start this round for each proc
 				for(Process p : procs)
 					p.start();
@@ -91,16 +102,24 @@ public class GHS {
 					Logger.debug(classname, method, "try to join process " + p.getId());
 					p.join();
 				}
-				clock.tick();
-				// see if all procs are terminated
+				// see if all procs are terminated and check for exceptions
 				terminate = true; // if even 1 proc is not terminated this will flip to false, which we want
-				for(Process p : procs)
+				for(Process p : procs) {
 					terminate = terminate && p.isTerminated();
+					if(p.hasException()) {
+						Logger.error(classname, method, "Process " + p.getId() + 
+							" threw exception at step " + clock.read() + ", terminating algorithm");
+						throw new InterruptedException();
+					}
+				}
+				clock.tick();
 			}
 		} catch(InterruptedException ex) {
 			Logger.error(classname, method, "Massive exception");
+			System.exit(1);
 		}
 
+		Logger.toScreen(classname, method, "Algorithm finished in " + clock.read() + " time steps");
 		for(Process p : procs)
 			Logger.toScreen(classname, method, "Process(" + p.getId() + "), mst edges: {" + p.mstEdges() + "}");
 

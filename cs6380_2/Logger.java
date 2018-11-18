@@ -40,7 +40,7 @@ public class Logger {
 		if(instance == null) {
 			try {
 				instance = new Logger(logfile, debug);
-				System.out.println("Initialized with log file " + logfile);
+				System.out.println("Initialized with log file " + logfile + " and debug = " + debug);
 			} catch(IOException e) {
 				System.out.println("Failed to initialize with log file " + logfile);
 			}

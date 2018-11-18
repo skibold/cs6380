@@ -13,7 +13,7 @@ public class Process implements Runnable { //extends Thread {
 	private String instancename;
 	private String logEdges;
 	private String cid;
-	private boolean begin;
+	private boolean begin, exc;
 	private int uid, round, level;
 	private Edge link2parent;
 	private Edge mwoe;
@@ -44,6 +44,7 @@ public class Process implements Runnable { //extends Thread {
 		this.link2parent = null;
 		this.mwoe = null;
 		this.begin = true;
+		this.exc = false;
 
 		Logger.normal(classname, "Process", "created process " + uid + " with edges " + logEdges);
 	}
@@ -64,16 +65,16 @@ public class Process implements Runnable { //extends Thread {
 	public void run() {
 		final String method = "run";
 		Logger.entering(instancename, method);
-		//edgeCount();
-		if(begin) { // begin by sending init to myself
-			begin = false;
-			//Message init = Message.init(uid, uid, level, cid);
-			//this.receiveInitMsg(init);
-			Logger.exiting(instancename, method);
-			return;
-		}
-
+		edgeCount();
 		try {
+			if(begin) { // begin by sending init to myself
+				begin = false;
+				//Message init = Message.init(uid, uid, level, cid);
+				//this.receiveInitMsg(init);
+				Logger.exiting(instancename, method);
+				return;
+			}
+
 			// receive all messages on my incident links
 			for(Edge e : edgeMap.values()) {
 				int sender = e.otherSide(uid);
@@ -104,8 +105,9 @@ public class Process implements Runnable { //extends Thread {
 		} catch(Exception ex) {
 			Logger.error(instancename, method, ex.toString());
 			ex.printStackTrace();
+			this.exc = true;
 		}
-		//edgeCount();
+		edgeCount();
 		Logger.exiting(instancename, method);
 	}
 
@@ -211,6 +213,10 @@ public class Process implements Runnable { //extends Thread {
 
 	public boolean isTerminated() {
 		return this.outsideEdges.isEmpty();
+	}
+
+	public boolean hasException() {
+		return this.exc;
 	}
 
 	public String mstEdges() {
