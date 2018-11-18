@@ -101,9 +101,8 @@ public class GHS {
 			Logger.error(classname, method, "Massive exception");
 		}
 
-		//for(Process p : procs)
-		//	Logger.toScreen(classname, method, "Process(" + p.getId() + ") parent: " + p.parent() + 
-		//			", children: {" + p.children() + "}, leader: " + p.isLeader());
+		for(Process p : procs)
+			Logger.toScreen(classname, method, "Process(" + p.getId() + "), mst edges: {" + p.mstEdges() + "}");
 
 	}
 

@@ -37,10 +37,8 @@ public class Edge {
 		try {
 			if(producerId == v1) {
 				success = v1producer.add(m); 
-				//Logger.debug(instancename, method, "Message " + m + " on queue from " + v1 + " to " + v2);
 			} else if(producerId == v2) {
 				success = v2producer.add(m); 
-				//Logger.debug(instancename, method, "Message " + m + " on queue from " + v2 + " to " + v1);
 			} 
 		} catch(NullPointerException e) {
 			Logger.error(instancename, method, "Error sending message from " + producerId);
@@ -92,8 +90,8 @@ public class Edge {
 	// return 1 if this edge is "heavier" than e
 	// return -1 if e is "heavier" than this edge
 	public int compare(Edge e) {
-		if(this == e) return 0;
 		if(e == null) return 1;
+		if(this == e) return 0;
 		if(this.weight == e.weight())
 			if(this.v1 == e.v1())
 				if(this.v2 == e.v2())
