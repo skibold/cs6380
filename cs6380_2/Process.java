@@ -17,13 +17,16 @@ public class Process implements Runnable { //extends Thread {
 	private int uid, round, level;
 	private Edge link2parent;
 	private Edge mwoe;
+	private Integer connectTrail; // uid of the child who reported the mwoe; where i will forward the chroot message
 	private HashMap<Integer, Edge> edgeMap; // hold all edges incident on this process
 	private ArrayList<Edge> componentEdges; // edges to other processes in my component; these edges are part of the MST
 	private ArrayList<Edge> outsideEdges; // edges which might be outside my component, initially all incident edges
 	private ArrayList<Edge> rejectedEdges; // edges which lead to processes in my component, but are not part of the MST
 	
 	private Integer awaitingResponseTest; // I am waiting for accept/reject from process with this uid
+	private Integer awaitingResponseConn; // I sent connect to this uid, waiting for a response
 	private ArrayList<Message> pendingResponseTest; // I must respond to the senders with accept/reject	
+	private ArrayList<Message> pendingResponseConn; // I must respond with a mutual connect
 
 	public Process(int uid, ArrayList<Edge> edges) {
 		this.uid = uid;
@@ -32,6 +35,7 @@ public class Process implements Runnable { //extends Thread {
 		this.round = 0;
 		instancename = classname + "(" + uid + ")";
 		this.pendingResponseTest = new ArrayList<Message>();
+		this.pendingResponseConn = new ArrayList<Message>();
 		this.outsideEdges = new ArrayList<Edge>();
 		this.componentEdges = new ArrayList<Edge>();
 		this.rejectedEdges = new ArrayList<Edge>();
@@ -44,8 +48,10 @@ public class Process implements Runnable { //extends Thread {
 		}
 		this.logEdges += "}";
 		this.awaitingResponseTest = null;
+		this.awaitingResponseConn = null;
 		this.link2parent = null;
 		this.mwoe = null;
+		this.connectTrail = null;
 		this.begin = true;
 		this.exc = false;
 
@@ -131,7 +137,9 @@ public class Process implements Runnable { //extends Thread {
 		final String method = "sendReportMsg";
 		Logger.entering(instancename, method);
 
-		
+		// if an mwoe is chosen (either from a child or one of my own outgoing egdes), 
+		// set this.connectTrail to the uid of the process who reported it	
+
 		Logger.exiting(instancename, method);
 		return true;
 	}
@@ -245,6 +253,16 @@ public class Process implements Runnable { //extends Thread {
 		final String method = "sendChrootMsg";
 		Logger.entering(instancename, method);
 
+		boolean sent = false;
+		if(this.connectTrail != null) {
+			Edge forward = this.edgeMap.get(this.connectTrail);
+			Message fwd = Message.cloneForNewRecipient(m, forward.otherSide(this.uid));
+			Logger.normal(instancename, method, "Fwd chroot down the trail");
+			forward.send(this.uid, fwd);
+			sent = true;
+		} else {
+			Logger.warning(instancename, method, "No trail to forward on");
+		}
 		
 		Logger.exiting(instancename, method);
 		return true;
@@ -253,7 +271,25 @@ public class Process implements Runnable { //extends Thread {
 		final String method = "receiveChrootMsg";
 		Logger.entering(instancename, method);
 
-		
+		if(this.connectTrail != null &&
+		   this.connectTrail == this.uid) { // I'm the guy who reported this mwoe, so connect over it
+			Logger.normal(instancename, method, "I reported this mwoe, send connect");
+			Edge local_mwoe = m.mwoe();
+			Message connect = Message.connect(this.uid, local_mwoe.otherSide(this.uid), m.level(), m.cid());
+			local_mwoe.send(this.uid, connect);
+			// record that I have sent a connect and wait for response
+			this.awaitingResponseConn = local_mwoe.otherSide(this.uid);
+			// check if i have received a connect from the other side of this mwoe; reprocess it
+			for(Message conn : this.pendingResponseConn) {
+				if(conn.originator() == this.awaitingResponseConn) {
+					Logger.normal(instancename, method, "reprocess connect message from " + conn.originator());
+					this.receiveConnectMsg(conn);
+					break;
+				}
+			}
+		} else { // forward down the connect trail
+			sendChrootMsg(m);
+		}
 
 		Logger.exiting(instancename, method);
 	}
