@@ -17,16 +17,19 @@ public class Process implements Runnable { //extends Thread {
 	private int uid, round, level;
 	private Edge link2parent;
 	private Edge mwoe;
+	private Edge coreEdge;
 	private Integer connectTrail; // uid of the child who reported the mwoe; where i will forward the chroot message
 	private HashMap<Integer, Edge> edgeMap; // hold all edges incident on this process
 	private ArrayList<Edge> componentEdges; // edges to other processes in my component; these edges are part of the MST
 	private ArrayList<Edge> outsideEdges; // edges which might be outside my component, initially all incident edges
 	private ArrayList<Edge> rejectedEdges; // edges which lead to processes in my component, but are not part of the MST
-	
+
 	private Integer awaitingResponseTest; // I am waiting for accept/reject from process with this uid
 	private Integer awaitingResponseConn; // I sent connect to this uid, waiting for a response
-	private ArrayList<Message> pendingResponseTest; // I must respond to the senders with accept/reject	
+	private ArrayList<Message> pendingResponseTest; // I must respond to the senders with accept/reject
 	private ArrayList<Message> pendingResponseConn; // I must respond with a mutual connect
+
+
 
 	public Process(int uid, ArrayList<Edge> edges) {
 		this.uid = uid;
@@ -78,8 +81,7 @@ public class Process implements Runnable { //extends Thread {
 		try {
 			if(begin) { // begin by sending init to myself
 				begin = false;
-				//Message init = Message.init(uid, uid, level, cid);
-				//this.receiveInitMsg(init);
+				this.sendInitMsg(this.cid);
 				Logger.exiting(instancename, method);
 				return;
 			}
@@ -121,13 +123,32 @@ public class Process implements Runnable { //extends Thread {
 	}
 
 /*** begin functions to handle receiving different message types ***/
+private void sendInitMsg() {
+	final String method = "sendInitMsg";
+
+	Logger.entering(instancename, method);
+	//for level 0 , each process is itself a component
+	for(Edge e:componentEdges){
+		int neighbor=e.otherSide(uid);
+		Message init = Message.init(uid, neighbor, level, cid);
+		e.send(uid,init);
+	}
+
+	Logger.exiting(instancename, method);
+	}
 
 	// INIT message
 	private void receiveInitMsg(Message m) {
 		final String method = "receiveInitMsg";
 
 		Logger.entering(instancename, method);
-		
+		if(outsideEdges.isEmpty()) {
+			this.mwoe = null;
+			Logger.normal(instancename, method, "No more edges to test, no mwoe");
+			Logger.exiting(instancename, method);
+			return false;
+		}
+		sendTestMsg();
 
 		Logger.exiting(instancename, method);
 	}
@@ -137,16 +158,24 @@ public class Process implements Runnable { //extends Thread {
 		final String method = "sendReportMsg";
 		Logger.entering(instancename, method);
 
-		// if an mwoe is chosen (either from a child or one of my own outgoing egdes), 
-		// set this.connectTrail to the uid of the process who reported it	
+		// if an mwoe is chosen (either from a child or one of my own outgoing egdes),
+		// set this.connectTrail to the uid of the process who reported it
+		if(this.mwoe!=null){
+			Message report = Message.report(uid,link2parent.otherSide(uid),this.mwoe);
+			report.send();
+		}
 
 		Logger.exiting(instancename, method);
 		return true;
 	}
 	private void receiveReportMsg(Message m) {
 		final String method = "receiveReportMsg";
+		// Check if messages are received from all the children
 		Logger.entering(instancename, method);
-
+		if(this.mwoe!=null && link2parent){
+			Message report = Message.report(uid,link2parent.otherSide(uid),this.mwoe);
+			report.send();
+		}
 		Logger.exiting(instancename, method);
 	}
 
@@ -162,7 +191,7 @@ public class Process implements Runnable { //extends Thread {
 			return false;
 		}
 		if(this.awaitingResponseTest != null) {
-			Logger.normal(instancename, method, "Already have a test message out to " + 
+			Logger.normal(instancename, method, "Already have a test message out to " +
 								awaitingResponseTest + ", do nothing");
 			Logger.exiting(instancename, method);
 			return false;
@@ -173,7 +202,7 @@ public class Process implements Runnable { //extends Thread {
 		Logger.normal(instancename, method, " to " + this.awaitingResponseTest);
 		Message test = Message.test(this.uid, this.awaitingResponseTest, this.level, this.cid);
 		this.mwoe.send(this.uid, test);
-		
+
 		Logger.exiting(instancename, method);
 		return true;
 	}
@@ -181,7 +210,7 @@ public class Process implements Runnable { //extends Thread {
 		final String method = "receiveTestMsg";
 		Logger.entering(instancename, method);
 
-		Logger.normal(instancename, method, "this.cid = " + this.cid + ", m.cid = " + m.cid() + 
+		Logger.normal(instancename, method, "this.cid = " + this.cid + ", m.cid = " + m.cid() +
 						", this.level = " + this.level + ", m.level = " + m.level());
 		pendingResponseTest.remove(m); // in case this is a re-process of the message
 		Edge back = edgeMap.get(m.originator());
@@ -207,6 +236,7 @@ public class Process implements Runnable { //extends Thread {
 		Logger.debug(instancename, method, m.originator() + " " + awaitingResponseTest);
 
 		if(awaitingResponseTest != null && m.originator() == awaitingResponseTest) {
+			// componentEdges.add(awaitingResponseTest)
 			awaitingResponseTest = null;
 			sendReportMsg();
 		} else {
@@ -224,11 +254,11 @@ public class Process implements Runnable { //extends Thread {
 
 		if(awaitingResponseTest != null && m.originator() == awaitingResponseTest) {
 			Edge reject = edgeMap.get(m.originator());
-			Logger.normal(instancename, method, "remove outsideEgde" + reject.toString() + 
+			Logger.normal(instancename, method, "remove outsideEgde" + reject.toString() +
 								" and insert into rejectedEdges");
 			insertionSort(rejectedEdges, reject);
 			outsideEdges.remove(reject);
-		
+
 			this.awaitingResponseTest = null;
 			if(!sendTestMsg())
 				sendReportMsg();
@@ -236,15 +266,34 @@ public class Process implements Runnable { //extends Thread {
 			Logger.warning(instancename, method, "Didn't expect this reject, do nothing");
 		}
 
-		Logger.exiting(instancename, method);		
+		Logger.exiting(instancename, method);
 	}
 
 	// CONNECT message
 	private void receiveConnectMsg(Message m) {
 		final String method = "receiveConnectMsg";
 		Logger.entering(instancename, method);
-		
-		
+		senderLevel=m.level()
+		if(senderLevel==level){
+			//MERGE
+			coreEdge=edgeMap.get(m.originator())
+			this.cid=m.cid>this.cid?m.cid:this.cid;
+			.add(coreEdge);
+			insertionSort(componentEdges, coreEdge);
+			outsideEdges.remove(coreEdge);
+			this.level+=1;
+			sendInitMsg(this.cid);
+			// componentEdges.addAll
+		}
+		else if (Math.abs(level-senderLevel)==1){
+			// this.cid=m.cid>this.cid?m.cid:this.cid;
+			// componentEdges.add(coreEdge);
+			// this.level+=1
+		}
+
+
+
+
 		Logger.exiting(instancename, method);
 	}
 
@@ -263,7 +312,7 @@ public class Process implements Runnable { //extends Thread {
 		} else {
 			Logger.warning(instancename, method, "No trail to forward on");
 		}
-		
+
 		Logger.exiting(instancename, method);
 		return true;
 	}
