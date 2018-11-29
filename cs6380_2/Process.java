@@ -81,7 +81,8 @@ public class Process implements Runnable { //extends Thread {
 		try {
 			if(begin) { // begin by sending init to myself
 				begin = false;
-				this.sendInitMsg(this.cid);
+				Message init = Message.init(uid,uid,level,cid);
+				this.receiveInitMsg(init);
 				Logger.exiting(instancename, method);
 				return;
 			}
@@ -140,7 +141,11 @@ private void sendInitMsg() {
 	// INIT message
 	private void receiveInitMsg(Message m) {
 		final String method = "receiveInitMsg";
-
+		if(link2parent!=null && !componentEdges.contains(link2parent)){
+			componentEdges.add(link2parent);
+			insertionSort(componentEdges, coreEdge);
+			outsideEdges.remove(coreEdge);
+		}
 		Logger.entering(instancename, method);
 		if(outsideEdges.isEmpty()) {
 			this.mwoe = null;
@@ -148,6 +153,10 @@ private void sendInitMsg() {
 			Logger.exiting(instancename, method);
 			return false;
 		}
+
+		this.awaitingResponseConn=null;
+		this.awaitingResponseTest=null;
+		this.mwoe=null;
 		sendTestMsg();
 
 		Logger.exiting(instancename, method);
@@ -176,6 +185,8 @@ private void sendInitMsg() {
 			Message report = Message.report(uid,link2parent.otherSide(uid),this.mwoe);
 			report.send();
 		}
+		//once parent node receives
+		if()
 		Logger.exiting(instancename, method);
 	}
 
@@ -272,20 +283,27 @@ private void sendInitMsg() {
 	// CONNECT message
 	private void receiveConnectMsg(Message m) {
 		final String method = "receiveConnectMsg";
+
 		Logger.entering(instancename, method);
 		senderLevel=m.level()
 		if(senderLevel==level){
 			//MERGE
+			Message connect= new Message.connect()
 			coreEdge=edgeMap.get(m.originator())
 			this.cid=m.cid>this.cid?m.cid:this.cid;
-			.add(coreEdge);
 			insertionSort(componentEdges, coreEdge);
 			outsideEdges.remove(coreEdge);
 			this.level+=1;
 			sendInitMsg(this.cid);
 			// componentEdges.addAll
 		}
-		else if (Math.abs(level-senderLevel)==1){
+		else if (level>senderLevel){
+
+			coreEdge=edgeMap.get(m.originator())
+			insertionSort(componentEdges, coreEdge);
+			outsideEdges.remove(coreEdge);
+			sendInitMsg();
+
 			// this.cid=m.cid>this.cid?m.cid:this.cid;
 			// componentEdges.add(coreEdge);
 			// this.level+=1
