@@ -124,40 +124,60 @@ public class Process implements Runnable { //extends Thread {
 	}
 
 /*** begin functions to handle receiving different message types ***/
-private void sendInitMsg() {
-	final String method = "sendInitMsg";
+	private void sendInitMsg() {
+		final String method = "sendInitMsg";
 
-	Logger.entering(instancename, method);
-	//for level 0 , each process is itself a component
-	for(Edge e:componentEdges){
-		int neighbor=e.otherSide(uid);
-		Message init = Message.init(uid, neighbor, level, cid);
-		e.send(uid,init);
-	}
+		Logger.entering(instancename, method);
+		//for level 0 , each process is itself a component
+		for(Edge e:componentEdges) {
+			if(link2parent != null && link2parent == e) continue; // don't send init back to parent
+			int neighbor=e.otherSide(uid);
+			Message init = Message.init(uid, neighbor, level, cid);
+			e.send(uid,init);
+		}
 
-	Logger.exiting(instancename, method);
+		Logger.exiting(instancename, method);
 	}
 
 	// INIT message
 	private void receiveInitMsg(Message m) {
 		final String method = "receiveInitMsg";
-		if(link2parent!=null && !componentEdges.contains(link2parent)){
-			componentEdges.add(link2parent);
-			insertionSort(componentEdges, coreEdge);
-			outsideEdges.remove(coreEdge);
-		}
 		Logger.entering(instancename, method);
-		if(outsideEdges.isEmpty()) {
-			this.mwoe = null;
-			Logger.normal(instancename, method, "No more edges to test, no mwoe");
-			Logger.exiting(instancename, method);
-			return false;
+
+		// record a few things
+		this.cid = m.cid();
+		this.level = m.level();
+		if(link2parent != null) {
+			outsideEdges.remove(link2parent);
+			if(!componentEdges.contains(link2parent)) {
+				Logger.debug(instancename, method, "Insert link2parent in componentEdges");
+				insertionSort(componentEdges, link2parent);
+			}
 		}
+		Logger.normal(instancename, method, "My new cid: " + this.cid + ", level: " + 
+							this.level + ", link2parent: " + this.link2parent);
+		
+		// check if I have pending test messages to which I must repond; reprocess them
+		ArrayList<Message> pending = new ArrayList<Message>(pendingResponseTest); // avoid concurrent modification
+		for(Message test : pending) {
+			Logger.normal(instancename, method, "reprocess test message from " + test.originator());
+			this.receiveTestMsg(test);
+		}
+
+		// similarly check if I have pending connect messages to which I must respond; reprocess them
+		// pending.clear(); pending.addAll(pendingResponseConn);
+		// for(Message conn : pending) { do stuff }
 
 		this.awaitingResponseConn=null;
 		this.awaitingResponseTest=null;
+		this.connectTrail=null;
 		this.mwoe=null;
-		sendTestMsg();
+
+		// forward the init message to all neighbors
+		sendInitMsg();
+		
+		if(!sendTestMsg()) // no more edges to test, so send the report
+			sendReportMsg();
 
 		Logger.exiting(instancename, method);
 	}
@@ -167,26 +187,41 @@ private void sendInitMsg() {
 		final String method = "sendReportMsg";
 		Logger.entering(instancename, method);
 
+		
+
 		// if an mwoe is chosen (either from a child or one of my own outgoing egdes),
 		// set this.connectTrail to the uid of the process who reported it
+/* comment out to compile
 		if(this.mwoe!=null){
 			Message report = Message.report(uid,link2parent.otherSide(uid),this.mwoe);
 			report.send();
 		}
+*/
 
 		Logger.exiting(instancename, method);
 		return true;
 	}
 	private void receiveReportMsg(Message m) {
 		final String method = "receiveReportMsg";
-		// Check if messages are received from all the children
+		// TODO check if I have received reports from all my children
+		// if link2parent == null then numchildren = componentEdges.size()
+		// else numchildren = componentEdges.size() -1
+
+		// collect all report messages in a global arraylist here
+		// then if I have them all and if i have a response from my test message (awaitingResponseTest==null), 
+		// choose the mwoe from among this.mwoe and all those from child report messages and send the report message
+		// for the chosen mwoe set this.connectTrail = uid of the guy who reported it
+		//    this.connectTrail = this.uid if the chose mwoe is this.mwoe OR
+		//    this.connectTrail = m.originator() for the Message m which contained the chosen mwoe
+		// Then send a new report message containing the chosen mwoe to link2parent
+		// Unless link2parent == null, then you have the component's mwoe, so create the chroot message and sent it to this.connectTrail - the uid of the guy who reported the chosen mwoe
 		Logger.entering(instancename, method);
-		if(this.mwoe!=null && link2parent){
+		if(this.mwoe!=null && link2parent!=null){
 			Message report = Message.report(uid,link2parent.otherSide(uid),this.mwoe);
-			report.send();
+			link2parent.send(uid,report);
 		}
 		//once parent node receives
-		if()
+		//if()
 		Logger.exiting(instancename, method);
 	}
 
@@ -247,7 +282,6 @@ private void sendInitMsg() {
 		Logger.debug(instancename, method, m.originator() + " " + awaitingResponseTest);
 
 		if(awaitingResponseTest != null && m.originator() == awaitingResponseTest) {
-			// componentEdges.add(awaitingResponseTest)
 			awaitingResponseTest = null;
 			sendReportMsg();
 		} else {
@@ -285,9 +319,23 @@ private void sendInitMsg() {
 		final String method = "receiveConnectMsg";
 
 		Logger.entering(instancename, method);
-		senderLevel=m.level()
+		int senderLevel=m.level();
 		if(senderLevel==level){
 			//MERGE
+			// check if I previously sent a connect to the guy who just sent this to me
+			// if this.awaitingResponseConn == m.originator() then 
+			// 	add this edge to componentEdges, remove from outsideEdges 
+			//	if this.uid > m.uid() then i am the new leader
+			//		this.cid = coreEdge.toString()
+			//		this.level++
+			//		this.link2parent = null because i'm the new component leader
+			//		send init to all neighbors; this will include the guy who just me this connect
+			//	else do nothing, i will eventually receive an init from the other side
+			// else 
+			//	this.pendingResponseConn.add(m) 
+			//	don't process this just yet, wait until/if I get a chroot message to connect over this edge
+
+/* commenting out to compile
 			Message connect= new Message.connect()
 			coreEdge=edgeMap.get(m.originator())
 			this.cid=m.cid>this.cid?m.cid:this.cid;
@@ -295,22 +343,20 @@ private void sendInitMsg() {
 			outsideEdges.remove(coreEdge);
 			this.level+=1;
 			sendInitMsg(this.cid);
+*/
 			// componentEdges.addAll
 		}
 		else if (level>senderLevel){
 
-			coreEdge=edgeMap.get(m.originator())
+			coreEdge=edgeMap.get(m.originator());
 			insertionSort(componentEdges, coreEdge);
 			outsideEdges.remove(coreEdge);
-			sendInitMsg();
+			sendInitMsg(); // don't send this init to all neighbors, just directly to the guy you just absorbed
 
 			// this.cid=m.cid>this.cid?m.cid:this.cid;
 			// componentEdges.add(coreEdge);
 			// this.level+=1
 		}
-
-
-
 
 		Logger.exiting(instancename, method);
 	}
@@ -399,6 +445,10 @@ private void sendInitMsg() {
 
 	public boolean hasException() {
 		return this.exc;
+	}
+
+	public boolean isLeader() {
+		return this.link2parent == null;
 	}
 
 	public String mstEdges() {

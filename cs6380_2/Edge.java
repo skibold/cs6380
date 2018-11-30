@@ -24,7 +24,7 @@ public class Edge {
 		this.v2producer = new ConcurrentLinkedQueue<Message>();
 		this.rand = new Random();
 		this.clock = clock;
-		Logger.normal(classname, "Edge", "Creating an edge from " + v1 + " to " + v2);
+		Logger.normal(classname, "Edge", "Creating an edge from " + v1 + " to " + v2 + " with weight " + weight);
 	}
 
 	public boolean send(int producerId, Message m) {

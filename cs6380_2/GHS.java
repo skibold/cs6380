@@ -121,7 +121,8 @@ public class GHS {
 
 		Logger.toScreen(classname, method, "Algorithm finished in " + clock.read() + " time steps");
 		for(Process p : procs)
-			Logger.toScreen(classname, method, "Process(" + p.getId() + "), mst edges: {" + p.mstEdges() + "}");
+			Logger.toScreen(classname, method, "Process(" + p.getId() + "), leader: " + 
+							p.isLeader() + ", mst edges: {" + p.mstEdges() + "}");
 
 	}
 
