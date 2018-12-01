@@ -42,7 +42,7 @@ public class GHS {
 		if((line = br.readLine()) != null) {
 			StringTokenizer st = new StringTokenizer(line, ",");
 			if(st.countTokens() != num_procs) {
-				Logger.error(classname, method, "Number of UIDs given(" + st.countTokens() + 
+				Logger.error(classname, method, "Number of UIDs given(" + st.countTokens() +
 					") does not match number of processes(" + num_procs + ")");
 				System.exit(1);
 			}
@@ -57,7 +57,7 @@ public class GHS {
 		while((line = br.readLine()) != null) {
 			StringTokenizer st = new StringTokenizer(line, ",");
 			if(st.countTokens() != num_procs) {
-				Logger.error(classname, method, "Connectivity matrix for process(" + ids[i] + 
+				Logger.error(classname, method, "Connectivity matrix for process(" + ids[i] +
 					") gives edges for " + st.countTokens() + " processes instead of " + num_procs);
 				System.exit(1);
 			}
@@ -66,7 +66,7 @@ public class GHS {
 			while(st.hasMoreTokens()) {
 				double w = Double.parseDouble(st.nextToken());
 				// symmetric matrix so skip the first i, and only use non-negative weights
-				if(j > i && w >= 0) 
+				if(j > i && w >= 0)
 					edges.add(new Edge(ids[i], ids[j], w, clock));
 				j++;
 			}
@@ -76,7 +76,7 @@ public class GHS {
 			Logger.error(classname, method, "Connectivity matrix gave edges for " + i + " processes instead of " + num_procs);
 			System.exit(1);
 		}
-			
+
 
 		// create procs with all incident edges
 		ArrayList<Process> procs = new ArrayList<Process>();
@@ -92,6 +92,7 @@ public class GHS {
 		// run
 		boolean terminate = false;
 		boolean exception = false;
+		String componentIdLeader="";
 		try {
 			while(!terminate) {
 				//Logger.toScreen(classname, method, "Step " + clock.read());
@@ -108,7 +109,7 @@ public class GHS {
 				for(Process p : procs) {
 					terminate = terminate && p.isTerminated();
 					if(p.hasException()) {
-						Logger.error(classname, method, "Process " + p.getId() + 
+						Logger.error(classname, method, "Process " + p.getId() +
 							" threw exception at step " + clock.read() + ", terminating algorithm");
 						throw new InterruptedException();
 					}
@@ -121,10 +122,13 @@ public class GHS {
 		}
 
 		Logger.toScreen(classname, method, "Algorithm finished in " + clock.read() + " time steps");
-		for(Process p : procs)
-			Logger.toScreen(classname, method, "Process(" + p.getId() + "), leader: " + 
+		for(Process p : procs){
+			Logger.toScreen(classname, method, "Process(" + p.getId() + "), leader: " +
 							p.isLeader() + ", mst edges: {" + p.mstEdges() + "}");
-
+			if(p.isLeader())
+						componentIdLeader=p.getCid();
+						}
+			Logger.toScreen(classname, method, "The component ID of the Leader "+componentIdLeader);
 	}
 
 }

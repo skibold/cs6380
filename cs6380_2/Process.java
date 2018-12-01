@@ -243,7 +243,7 @@ public class Process implements Runnable { //extends Thread {
 				receiveChrootMsg(chroot);
 			}
 		} else { // send report to my parent
-			Logger.normal(instancename, method, "Report mwoe " + this.mwoe + 
+			Logger.normal(instancename, method, "Report mwoe " + this.mwoe +
 							" to my parent " + link2parent.otherSide(this.uid));
 			Message report = Message.report(uid, link2parent.otherSide(uid), this.mwoe);
 			link2parent.send(uid, report);
@@ -368,7 +368,7 @@ public class Process implements Runnable { //extends Thread {
 	private void receiveConnectMsg(Message m) {
 		final String method = "receiveConnectMsg";
 		Logger.entering(instancename, method);
-		Logger.debug(instancename, method, m.originator() + " " + awaitingResponseConn + 
+		Logger.debug(instancename, method, m.originator() + " " + awaitingResponseConn +
 						" pendingResponse? " + pendingResponseConn.contains(m));
 
 		this.pendingResponseConn.remove(m); // in case this a re-process of the message
@@ -403,7 +403,7 @@ public class Process implements Runnable { //extends Thread {
 				Logger.error(instancename, method, "My level (" + this.level + ") should not be less than " +
 								m.originator() + " level (" + m.level() + ")");
 		}
-		
+
 		Logger.exiting(instancename, method);
 	}
 
@@ -483,6 +483,10 @@ public class Process implements Runnable { //extends Thread {
 	//override
 	public long getId() {
 		return uid;
+	}
+
+	public String getCid(){
+		return cid;
 	}
 
 	public boolean isTerminated() {
