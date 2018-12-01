@@ -94,6 +94,7 @@ public class GHS {
 		boolean exception = false;
 		try {
 			while(!terminate) {
+				//Logger.toScreen(classname, method, "Step " + clock.read());
 				// start this round for each proc
 				for(Process p : procs)
 					p.start();

@@ -17,7 +17,6 @@ public class Process implements Runnable { //extends Thread {
 	private int uid, round, level;
 	private Edge link2parent;
 	private Edge mwoe;
-	private Edge coreEdge;
 	private Integer connectTrail; // uid of the child who reported the mwoe; where i will forward the chroot message
 	private HashMap<Integer, Edge> edgeMap; // hold all edges incident on this process
 	private ArrayList<Edge> componentEdges; // edges to other processes in my component; these edges are part of the MST
@@ -28,7 +27,7 @@ public class Process implements Runnable { //extends Thread {
 	private Integer awaitingResponseConn; // I sent connect to this uid, waiting for a response
 	private ArrayList<Message> pendingResponseTest; // I must respond to the senders with accept/reject
 	private ArrayList<Message> pendingResponseConn; // I must respond with a mutual connect
-	private ArrayList<Message> pendingResponseReport;
+	private ArrayList<Message> pendingResponseReport; // Reports from my children
 
 
 
@@ -40,6 +39,7 @@ public class Process implements Runnable { //extends Thread {
 		instancename = classname + "(" + uid + ")";
 		this.pendingResponseTest = new ArrayList<Message>();
 		this.pendingResponseConn = new ArrayList<Message>();
+		this.pendingResponseReport = new ArrayList<Message>();
 		this.outsideEdges = new ArrayList<Edge>();
 		this.componentEdges = new ArrayList<Edge>();
 		this.rejectedEdges = new ArrayList<Edge>();
@@ -125,22 +125,22 @@ public class Process implements Runnable { //extends Thread {
 	}
 
 /*** begin functions to handle receiving different message types ***/
-	private void sendInitMsg() {
+	// INIT message
+	private void sendInitMsg(Message m) {
 		final String method = "sendInitMsg";
 
 		Logger.entering(instancename, method);
 		//for level 0 , each process is itself a component
 		for(Edge e:componentEdges) {
-			if(link2parent != null && link2parent == e) continue; // don't send init back to parent
+			if(e.compare(link2parent) == 0) continue; // don't send init back to parent
 			int neighbor=e.otherSide(uid);
-			Message init = Message.init(uid, neighbor, level, cid);
+			Message init = Message.cloneForNewRecipient(m, neighbor);
 			e.send(uid,init);
 		}
 
 		Logger.exiting(instancename, method);
 	}
 
-	// INIT message
 	private void receiveInitMsg(Message m) {
 		final String method = "receiveInitMsg";
 		Logger.entering(instancename, method);
@@ -166,23 +166,21 @@ public class Process implements Runnable { //extends Thread {
 		}
 
 		// similarly check if I have pending connect messages to which I must respond; reprocess them
-		// pending.clear(); pending.addAll(pendingResponseConn);
-		// for(Message conn : pending) { do stuff }
 		pending.clear();
 		pending.addAll(pendingResponseConn);
-			for(Message conn:pending){
-				Logger.normal(instancename, method, "reprocess connect message from " + conn.originator());
-				this.receiveConnectMsg(conn);
-			}
+		for(Message conn:pending){
+			Logger.normal(instancename, method, "reprocess connect message from " + conn.originator());
+			this.receiveConnectMsg(conn);
+		}
 
-
+		this.pendingResponseReport.clear();
 		this.awaitingResponseConn=null;
 		this.awaitingResponseTest=null;
 		this.connectTrail=null;
 		this.mwoe=null;
 
 		// forward the init message to all neighbors
-		sendInitMsg();
+		sendInitMsg(m);
 
 		if(!sendTestMsg()) // no more edges to test, so send the report
 			sendReportMsg();
@@ -197,7 +195,8 @@ public class Process implements Runnable { //extends Thread {
 		int numchildren=0;
 		Edge minMWOE;
 		int result;
-		ArrayList<Edge> sortedEdges= new ArrayList<Edge>(componentEdges);
+		ArrayList<Edge> sortedEdges= new ArrayList<Edge>(); //componentEdges);
+		HashMap<String, Integer> edgeName2uid = new HashMap<String, Integer>();
 
 		if (link2parent == null){
 			numchildren = componentEdges.size();
@@ -205,27 +204,51 @@ public class Process implements Runnable { //extends Thread {
 		else {
 			numchildren = componentEdges.size() -1;
 		}
-		if (this.awaitingResponseTest==null){
+		if (this.awaitingResponseTest!=null){
 			return false;
 		}
 		if (pendingResponseReport.size()<numchildren){
 			return false;
 		}
-		sortedEdges.clear();
-		minMWOE=pendingResponseReport.get(0).mwoe();
+		//sortedEdges.clear();
+		//minMWOE=pendingResponseReport.get(0).mwoe();
 		for(Message report:pendingResponseReport){
-			insertionSort(sortedEdges, report.mwoe());
+			if(report.mwoe() != null) {
+				insertionSort(sortedEdges, report.mwoe());
+				edgeName2uid.put(report.mwoe().toString(), report.originator());
+			}
 		}
-		minMWOE=sortedEdges.get(0);
-		this.mwoe=minMWOE; //??
-		// this.connectTrail=minMWOE.originator();
-		if(this.mwoe!=null && link2parent!=null){
-			Message report = Message.report(uid,link2parent.otherSide(uid),minMWOE);
-			link2parent.send(uid,report);
+		if(this.mwoe != null) {
+			insertionSort(sortedEdges, this.mwoe); // add this.mowe into the consideration
+			edgeName2uid.put(this.mwoe.toString(), this.uid);
 		}
 
-		// if an mwoe is chosen (either from a child or one of my own outgoing egdes),
-		// set this.connectTrail to the uid of the process who reported it
+		if(!sortedEdges.isEmpty()) {
+			this.mwoe=sortedEdges.get(0);
+			this.connectTrail = edgeName2uid.get(this.mwoe.toString());
+		} else {
+			this.mwoe = null;
+			this.connectTrail = null;
+		}
+
+		this.pendingResponseReport.clear();
+
+		if(link2parent == null) { // assume i am the leader; send change root message
+			if(this.mwoe == null) {
+				Logger.normal(instancename, method, "I am the leader, no mwoe found, this must be the end");
+				return false;
+			} else {
+				Logger.normal(instancename, method, "I am the leader, make connection on mwoe " + this.mwoe);
+				Message chroot = Message.chroot(uid, level, cid, this.mwoe);
+				receiveChrootMsg(chroot);
+			}
+		} else { // send report to my parent
+			Logger.normal(instancename, method, "Report mwoe " + this.mwoe + 
+							" to my parent " + link2parent.otherSide(this.uid));
+			Message report = Message.report(uid, link2parent.otherSide(uid), this.mwoe);
+			link2parent.send(uid, report);
+		}
+
 		Logger.exiting(instancename, method);
 		return true;
 	}
@@ -344,57 +367,43 @@ public class Process implements Runnable { //extends Thread {
 	// CONNECT message
 	private void receiveConnectMsg(Message m) {
 		final String method = "receiveConnectMsg";
-
 		Logger.entering(instancename, method);
-		int senderLevel=m.level();
-		if(senderLevel==level){
-			//MERGE
-			// check if I previously sent a connect to the guy who just sent this to me
-			if (this.awaitingResponseConn == m.originator()){
-				coreEdge=edgeMap.get(m.originator());
-				if (this.uid>m.originator()){
-					this.cid=coreEdge.toString();
+		Logger.debug(instancename, method, m.originator() + " " + awaitingResponseConn + 
+						" pendingResponse? " + pendingResponseConn.contains(m));
+
+		this.pendingResponseConn.remove(m); // in case this a re-process of the message
+
+		Edge incoming = this.edgeMap.get(m.originator());
+		if(this.level == m.level()) { // see if we can merge
+			// check if i have previously sent a connect on this edge
+			if(this.awaitingResponseConn != null && m.originator() == this.awaitingResponseConn) {
+				Logger.normal(instancename, method, "Merge with " + m.originator() + " in cluster " + m.cid());
+				insertionSort(componentEdges, incoming);
+				outsideEdges.remove(incoming);
+				if(this.uid > m.originator()) { // I am the new component leader
+					this.cid = incoming.toString(); // new core edge
 					this.level++;
-					this.link2parent=null;  //i don't understand this part
-					sendInitMsg();
+					Message init = Message.init(this.uid, this.uid, this.level, this.cid);
+					this.link2parent = null;
+					this.receiveInitMsg(init);
+				} else {
+					Logger.normal(instancename, method, "The other side must be the new leader, expect an init");
 				}
-				insertionSort(componentEdges, coreEdge);
-				outsideEdges.remove(coreEdge);
-			}
-			else{
+			} else {
 				this.pendingResponseConn.add(m);
+				Logger.normal(instancename, method, "defer response");
 			}
-											// 	add this edge to componentEdges, remove from outsideEdges
-											//	if this.uid > m.uid() then i am the new leader
-											//		this.cid = coreEdge.toString()
-											//		this.level++
-											//		this.link2parent = null because i'm the new component leader
-											//		send init to all neighbors; this will include the guy who just me this connect
-											//	else do nothing, i will eventually receive an init from the other side
-											// else
-											//	this.pendingResponseConn.add(m)
-											//	don't process this just yet, wait until/if I get a chroot message to connect over this edge
-
-								/* commenting out to compile
-											Message connect= new Message.connect()
-											coreEdge=edgeMap.get(m.originator())
-											this.cid=m.cid>this.cid?m.cid:this.cid;
-											insertionSort(componentEdges, coreEdge);
-											outsideEdges.remove(coreEdge);
-											this.level+=1;
-											sendInitMsg(this.cid);
-								*/
-											// componentEdges.addAll
+		} else if(this.level > m.level()) { // absorb
+			Logger.normal(instancename, method, "Absorb " + m.originator() + " and its cluster " + m.cid());
+			insertionSort(componentEdges, incoming);
+			outsideEdges.remove(incoming);
+			Message init = Message.init(this.uid, m.originator(), this.level, this.cid);
+			incoming.send(this.uid, init);
+		} else { //error
+				Logger.error(instancename, method, "My level (" + this.level + ") should not be less than " +
+								m.originator() + " level (" + m.level() + ")");
 		}
-		else if (level>senderLevel){
-			//ABSORB
-			coreEdge=edgeMap.get(m.originator());
-			insertionSort(componentEdges, coreEdge);
-			outsideEdges.remove(coreEdge);
-			Message init = Message.init(this.uid,m.originator(),this.level,this.cid);
-			coreEdge.send(uid,init);// don't send this init to all neighbors, just directly to the guy you just absorbed
-		}
-
+		
 		Logger.exiting(instancename, method);
 	}
 
@@ -415,7 +424,7 @@ public class Process implements Runnable { //extends Thread {
 		}
 
 		Logger.exiting(instancename, method);
-		return true;
+		return sent;
 	}
 	private void receiveChrootMsg(Message m) {
 		final String method = "receiveChrootMsg";
