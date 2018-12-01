@@ -194,18 +194,38 @@ public class Process implements Runnable { //extends Thread {
 	private boolean sendReportMsg() {
 		final String method = "sendReportMsg";
 		Logger.entering(instancename, method);
+		int numchildren=0;
+		Edge minMWOE;
+		int result;
+		ArrayList<Edge> sortedEdges= new ArrayList<Edge>(componentEdges);
 
-
+		if (link2parent == null){
+			numchildren = componentEdges.size();
+		}
+		else {
+			numchildren = componentEdges.size() -1;
+		}
+		if (this.awaitingResponseTest==null){
+			return false;
+		}
+		if (pendingResponseReport.size()<numchildren){
+			return false;
+		}
+		sortedEdges.clear();
+		minMWOE=pendingResponseReport.get(0).mwoe();
+		for(Message report:pendingResponseReport){
+			insertionSort(sortedEdges, report.mwoe());
+		}
+		minMWOE=sortedEdges.get(0);
+		this.mwoe=minMWOE; //??
+		// this.connectTrail=minMWOE.originator();
+		if(this.mwoe!=null && link2parent!=null){
+			Message report = Message.report(uid,link2parent.otherSide(uid),minMWOE);
+			link2parent.send(uid,report);
+		}
 
 		// if an mwoe is chosen (either from a child or one of my own outgoing egdes),
 		// set this.connectTrail to the uid of the process who reported it
-/* comment out to compile
-		if(this.mwoe!=null){
-			Message report = Message.report(uid,link2parent.otherSide(uid),this.mwoe);
-			report.send();
-		}
-*/
-
 		Logger.exiting(instancename, method);
 		return true;
 	}
@@ -214,22 +234,19 @@ public class Process implements Runnable { //extends Thread {
 		// TODO check if I have received reports from all my children
 		// if link2parent == null then numchildren = componentEdges.size()
 		// else numchildren = componentEdges.size() -1
-		// pendingResponseReport.add(m);
+		pendingResponseReport.add(m);
+
+		sendReportMsg();
 		// if(pendingResponseReport)
 		// collect all report messages in a global arraylist here
 		// then if I have them all and if i have a response from my test message (awaitingResponseTest==null),
 		// choose the mwoe from among this.mwoe and all those from child report messages and send the report message
 		// for the chosen mwoe set this.connectTrail = uid of the guy who reported it
 		//    this.connectTrail = this.uid if the chose mwoe is this.mwoe OR
-		//    this.connectTrail = m.originator() for the Message m which contained the chosen mwoe
 		// Then send a new report message containing the chosen mwoe to link2parent
 		// Unless link2parent == null, then you have the component's mwoe, so create the chroot message and sent it to this.connectTrail - the uid of the guy who reported the chosen mwoe
+		//    this.connectTrail = m.originator() for the Message m which contained the chosen mwoe
 		// this.connectTrail=this.mwoe.originator();
-		Logger.entering(instancename, method);
-		if(this.mwoe!=null && link2parent!=null){
-			Message report = Message.report(uid,link2parent.otherSide(uid),this.mwoe);
-			link2parent.send(uid,report);
-		}
 		//once parent node receives
 		//if()
 		Logger.exiting(instancename, method);
